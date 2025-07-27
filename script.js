@@ -19,9 +19,35 @@ if (mobileToggle) {
   });
 }
   
-  // Handle touch events for mobile
-  document.addEventListener('touchmove', (e) => {
-    e.preventDefault();
+// Eye tracking functionality (only if eye element exists)
+function initEyeTracking() {
+  const eye = document.querySelector('.eye');
+  const iris = document.querySelector('.iris');
+  
+  if (!eye || !iris) return;
+  
+  // Handle mouse events for desktop
+  document.addEventListener('mousemove', (e) => {
+    const eyeRect = eye.getBoundingClientRect();
+    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+    const dx = e.clientX - eyeCenterX;
+    const dy = e.clientY - eyeCenterY;
+
+    const angle = Math.atan2(dy, dx);
+    const distance = Math.min(Math.sqrt(dx*dx + dy*dy) / 10, 30);
+    const radius = distance;
+
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+
+    iris.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  
+  // Handle touch events for mobile (only within the eye area)
+  eye.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Only prevent default within the eye element
     const touch = e.touches[0];
     
     const eyeRect = eye.getBoundingClientRect();
@@ -40,6 +66,7 @@ if (mobileToggle) {
 
     iris.style.transform = `translate(${x}px, ${y}px)`;
   }, { passive: false });
+}
 
 // Contact form validation
 function initContactForm() {
@@ -223,4 +250,5 @@ document.addEventListener('DOMContentLoaded', function() {
   initContactForm();
   initScrollAnimations();
   initFaqToggle();
+  initEyeTracking();
 });
