@@ -126,10 +126,23 @@ img {
 }
 
 .btn-outline {
-  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  border-radius: var(--border-radius);
   border: 2px solid var(--primary);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  background-color: transparent;
   color: var(--primary);
   box-shadow: none;
+  width: 100%;
+  min-width: 140px;
 }
 
 .btn-outline:hover {
@@ -800,7 +813,8 @@ img {
     flex-direction: column;
   }
   
-  .btn {
+  .btn,
+  .btn-outline {
     width: 100%;
     justify-content: center;
   }
