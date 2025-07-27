@@ -923,7 +923,7 @@ img {
   
   /* Mobile-optimized services layout */
   .services-grid {
-    gap: 16px;
+    grid-template-columns: 1fr;
   }
   
   .grid-cols-2,
