@@ -924,6 +924,7 @@ img {
   /* Mobile-optimized services layout */
   .services-grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
   
   .grid-cols-2,
