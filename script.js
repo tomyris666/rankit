@@ -1,254 +1,258 @@
-// Header scroll effect
-window.addEventListener('scroll', function() {
+/**
+ * Modern RankIT Consultancy JavaScript
+ * Clean, minimal, and mobile-optimized
+ */
+
+// Sticky Header with Shrinking Effect
+function initStickyHeader() {
   const header = document.querySelector('.header');
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-});
+  if (!header) return;
 
-// Mobile menu toggle
-const mobileToggle = document.querySelector('.mobile-toggle');
-const navMenu = document.querySelector('.nav-menu');
-
-if (mobileToggle) {
-  mobileToggle.addEventListener('click', function() {
-    navMenu.classList.toggle('active');
-    this.classList.toggle('active');
-  });
-}
+  let lastScrollY = window.scrollY;
   
-// Eye tracking functionality (only if eye element exists)
-function initEyeTracking() {
-  const eye = document.querySelector('.eye');
-  const iris = document.querySelector('.iris');
-  
-  if (!eye || !iris) return;
-  
-  // Handle mouse events for desktop
-  document.addEventListener('mousemove', (e) => {
-    const eyeRect = eye.getBoundingClientRect();
-    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-
-    const dx = e.clientX - eyeCenterX;
-    const dy = e.clientY - eyeCenterY;
-
-    const angle = Math.atan2(dy, dx);
-    const distance = Math.min(Math.sqrt(dx*dx + dy*dy) / 10, 30);
-    const radius = distance;
-
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-
-    iris.style.transform = `translate(${x}px, ${y}px)`;
-  });
-  
-  // Handle touch events for mobile (only within the eye area)
-  eye.addEventListener('touchmove', (e) => {
-    e.preventDefault(); // Only prevent default within the eye element
-    const touch = e.touches[0];
+  function updateHeader() {
+    const currentScrollY = window.scrollY;
     
-    const eyeRect = eye.getBoundingClientRect();
-    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-
-    const dx = touch.clientX - eyeCenterX;
-    const dy = touch.clientY - eyeCenterY;
-
-    const angle = Math.atan2(dy, dx);
-    const distance = Math.min(Math.sqrt(dx*dx + dy*dy) / 10, 30);
-    const radius = distance;
-
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-
-    iris.style.transform = `translate(${x}px, ${y}px)`;
-  }, { passive: false });
+    if (currentScrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    lastScrollY = currentScrollY;
+  }
+  
+  // Use requestAnimationFrame for smooth performance
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateHeader);
+      ticking = true;
+      setTimeout(() => { ticking = false; }, 16); // ~60fps
+    }
+  }
+  
+  window.addEventListener('scroll', requestTick, { passive: true });
 }
 
-// Contact form validation
-function initContactForm() {
-  const contactForm = document.getElementById('contactForm');
+// Mobile Navigation Toggle
+function initMobileNav() {
+  const mobileToggle = document.querySelector('.mobile-toggle');
+  const navMenu = document.querySelector('.nav-menu');
   
+  if (!mobileToggle || !navMenu) return;
+  
+  mobileToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    mobileToggle.classList.toggle('active');
+    
+    // Update ARIA attributes for accessibility
+    const isOpen = navMenu.classList.contains('active');
+    mobileToggle.setAttribute('aria-expanded', isOpen);
+  });
+  
+  // Close mobile menu when clicking on nav links
+  const navLinks = navMenu.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('active');
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+      navMenu.classList.remove('active');
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// Contact Form Validation
+function initContactForm() {
+  const contactForm = document.querySelector('.contact-form');
   if (!contactForm) return;
   
-  contactForm.addEventListener('submit', function(e) {
+  contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
+    const formData = new FormData(contactForm);
+    const name = formData.get('name')?.trim();
+    const email = formData.get('email')?.trim();
+    const message = formData.get('message')?.trim();
+    
+    // Clear previous errors
+    clearFormErrors(contactForm);
     
     let isValid = true;
     
-    // Simple validation
-    if (!nameInput.value.trim()) {
-      showError(nameInput, 'Name is required');
+    // Validate name
+    if (!name) {
+      showFormError(contactForm.querySelector('[name="name"]'), 'Name is required');
       isValid = false;
-    } else {
-      removeError(nameInput);
     }
     
-    if (!emailInput.value.trim()) {
-      showError(emailInput, 'Email is required');
+    // Validate email
+    if (!email) {
+      showFormError(contactForm.querySelector('[name="email"]'), 'Email is required');
       isValid = false;
-    } else if (!isValidEmail(emailInput.value)) {
-      showError(emailInput, 'Please enter a valid email');
+    } else if (!isValidEmail(email)) {
+      showFormError(contactForm.querySelector('[name="email"]'), 'Please enter a valid email');
       isValid = false;
-    } else {
-      removeError(emailInput);
     }
     
-    if (!messageInput.value.trim()) {
-      showError(messageInput, 'Message is required');
+    // Validate message
+    if (!message) {
+      showFormError(contactForm.querySelector('[name="message"]'), 'Message is required');
       isValid = false;
-    } else {
-      removeError(messageInput);
     }
     
     if (isValid) {
-      // Show success message (in real app would send data to server)
-      const successMessage = document.createElement('div');
-      successMessage.className = 'alert alert-success';
-      successMessage.textContent = 'Your message has been sent successfully!';
-      
+      showFormSuccess(contactForm, 'Thank you! Your message has been sent successfully.');
       contactForm.reset();
-      contactForm.parentNode.insertBefore(successMessage, contactForm);
-      
-      setTimeout(() => {
-        successMessage.remove();
-      }, 5000);
     }
   });
-  
-  function showError(input, message) {
-    const formGroup = input.parentElement;
-    const errorElement = formGroup.querySelector('.error-message') || document.createElement('div');
-    
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    
-    if (!formGroup.querySelector('.error-message')) {
-      formGroup.appendChild(errorElement);
-    }
-    
-    input.classList.add('error');
-  }
-  
-  function removeError(input) {
-    const formGroup = input.parentElement;
-    const errorElement = formGroup.querySelector('.error-message');
-    
-    if (errorElement) {
-      errorElement.remove();
-    }
-    
-    input.classList.remove('error');
-  }
-  
-  function isValidEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
 }
 
-// Animate on scroll
+// Form Utility Functions
+function showFormError(input, message) {
+  const formGroup = input.closest('.form-group') || input.parentElement;
+  
+  // Remove existing error
+  const existingError = formGroup.querySelector('.form-error');
+  if (existingError) existingError.remove();
+  
+  // Add error message
+  const errorElement = document.createElement('div');
+  errorElement.className = 'form-error';
+  errorElement.textContent = message;
+  errorElement.style.cssText = 'color: #ef4444; font-size: 0.875rem; margin-top: 4px;';
+  
+  formGroup.appendChild(errorElement);
+  input.style.borderColor = '#ef4444';
+  input.setAttribute('aria-invalid', 'true');
+}
+
+function clearFormErrors(form) {
+  const errors = form.querySelectorAll('.form-error');
+  const inputs = form.querySelectorAll('input, textarea');
+  
+  errors.forEach(error => error.remove());
+  inputs.forEach(input => {
+    input.style.borderColor = '';
+    input.removeAttribute('aria-invalid');
+  });
+}
+
+function showFormSuccess(form, message) {
+  // Remove existing success message
+  const existingSuccess = form.querySelector('.form-success');
+  if (existingSuccess) existingSuccess.remove();
+  
+  // Add success message
+  const successElement = document.createElement('div');
+  successElement.className = 'form-success';
+  successElement.textContent = message;
+  successElement.style.cssText = 'color: #10b981; background: #ecfdf5; padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #d1fae5;';
+  
+  form.insertBefore(successElement, form.firstChild);
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (successElement.parentNode) {
+      successElement.remove();
+    }
+  }, 5000);
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Smooth Scroll Animation for Elements
 function initScrollAnimations() {
-  const animatedElements = document.querySelectorAll('.animate');
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
   
-  if (!animatedElements.length) return;
-  
-  function checkInView() {
-    animatedElements.forEach(element => {
-      const elementTop = element.getBoundingClientRect().top;
-      const elementVisible = 150;
-      
-      if (elementTop < window.innerHeight - elementVisible) {
-        element.classList.add('active');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
       }
     });
-  }
+  }, observerOptions);
   
-  window.addEventListener('scroll', checkInView);
-  checkInView();
+  // Observe elements with animation classes
+  const animatedElements = document.querySelectorAll('.fade-in, .slide-up, .slide-in-left, .slide-in-right');
+  animatedElements.forEach(el => observer.observe(el));
 }
 
-// FAQ Toggle Functionality
-function initFaqToggle() {
-  const faqItems = document.querySelectorAll('.faq-item');
+// Hero Text Animation
+function initHeroAnimation() {
+  const heroTitle = document.querySelector('.hero-title');
+  const heroSubtitle = document.querySelector('.hero-subtitle');
   
-  if (!faqItems.length) return;
-
-  function closeAllItems() {
-    faqItems.forEach(item => {
-      const content = item.querySelector('.faq-content');
-      if (content) {
-        content.style.maxHeight = '0px';
-      }
-      item.classList.remove('active');
-    });
+  if (heroTitle) {
+    setTimeout(() => heroTitle.classList.add('animate-in'), 300);
   }
-
-  function openItem(item) {
-    const content = item.querySelector('.faq-content');
-    if (content) {
-      // Get the scroll height to use for max-height
-      const scrollHeight = content.scrollHeight;
-      content.style.maxHeight = scrollHeight + 'px';
-    }
-    item.classList.add('active');
+  if (heroSubtitle) {
+    setTimeout(() => heroSubtitle.classList.add('animate-in'), 600);
   }
-
-  // Initially close all items
-  closeAllItems();
-
-  // Add click handlers
-  faqItems.forEach(item => {
-    const button = item.querySelector('.faq-button');
-    if (!button) return;
-
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      const isActive = item.classList.contains('active');
-      
-      if (isActive) {
-        // If clicking an open item, just close it
-        const content = item.querySelector('.faq-content');
-        if (content) {
-          content.style.maxHeight = '0px';
-        }
-        item.classList.remove('active');
-      } else {
-        // If clicking a closed item, close others and open this one
-        closeAllItems();
-        openItem(item);
-      }
-    });
-  });
-
-  // Handle window resize to update maxHeight
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const activeItem = document.querySelector('.faq-item.active');
-      if (activeItem) {
-        const content = activeItem.querySelector('.faq-content');
-        if (content) {
-          content.style.maxHeight = content.scrollHeight + 'px';
-        }
-      }
-    }, 150);
-  });
 }
 
-// Initialize all functions when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize All Functionality
+function initApp() {
+  // Initialize core features
+  initStickyHeader();
+  initMobileNav();
   initContactForm();
   initScrollAnimations();
-  initFaqToggle();
-  initEyeTracking();
+  initHeroAnimation();
+  
+  // Add smooth scrolling for anchor links
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
+
+// Handle window resize to update maxHeight
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    const activeItem = document.querySelector('.faq-item.active');
+    if (activeItem) {
+      const content = activeItem.querySelector('.faq-content');
+      if (content) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    }
+  }, 150);
 });
+
+
