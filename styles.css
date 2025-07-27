@@ -154,7 +154,7 @@ img {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: var(--light);
+  background-color: red;
   box-shadow: var(--shadow);
   z-index: 1000;
   padding: 15px 0;
@@ -412,19 +412,19 @@ img {
 
 /* Services */
 .services {
-  background-color: var(--gray);
+  background-color: transparent;
 }
 
 .section:nth-child(even) {
-  background-color: var(--gray);
+  background-color: transparent;
 }
 
 .section:nth-child(odd) {
-  background-color: var(--light);
+  background-color: transparent;
 }
 
 .service-card {
-  background-color: var(--light);
+  background-color: transparent;
   border-radius: var(--border-radius);
   padding: 30px;
   box-shadow: 0 5px 15px var(--shadow);
@@ -502,7 +502,7 @@ img {
 
 /* News */
 .news-card {
-  background-color: var(--light);
+  background-color: transparent;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -557,7 +557,7 @@ img {
   margin-bottom: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  background: white;
+  background: transparent;
   overflow: hidden;
 }
 
@@ -607,7 +607,7 @@ img {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-  background-color: white;
+  background-color: transparent;
 }
 
 .faq-answer {
@@ -836,7 +836,7 @@ img {
     left: -100%;
     width: 100%;
     height: calc(100vh - 70px);
-    background-color: var(--light);
+    background-color: red;
     flex-direction: column;
     align-items: center;
     justify-content: center;
