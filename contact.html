@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Contact RankIT Consultancy for SEO services, consultations, and digital marketing solutions. Get in touch with our team of experts today.">
+  <title>Contact Us | RankIT Consultancy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <img src="https://via.placeholder.com/40" alt="RankIT Consultancy Logo">
+        <div class="logo-text">Rank<span>IT</span> Consultancy</div>
+      </div>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="news.html" class="nav-link">News</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Banner -->
+  <section class="section" style="background-color: var(--dark); color: var(--light); padding: 100px 0 60px;">
+    <div class="container">
+      <h1 class="section-title text-center" style="color: var(--light);">Contact Us</h1>
+      <p class="text-center" style="max-width: 700px; margin: 0 auto;">Have questions about our SEO services? Ready to boost your online presence? Get in touch with our team today.</p>
+    </div>
+  </section>
+
+  <!-- Contact Information -->
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-12 col-lg-4">
+          <div class="contact-info-card animate">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <h3>Call Us</h3>
+            <p>Phone: +1 (555) 123-4567<br>Toll Free: 1-800-SEO-GLAZ<br>Fax: +1 (555) 123-4568</p>
+          </div>
+        </div>
+        <div class="col col-md-12 col-lg-4">
+          <div class="contact-info-card animate">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3>Email Us</h3>
+            <p>General Inquiries: info@rankitconsultancy.com<br>Support: support@rankitconsultancy.com<br>Careers: careers@rankitconsultancy.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="section services">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-12 col-lg-6">
+          <div class="contact-form-container animate">
+            <h2 class="section-title">Send Us a Message</h2>
+            <p>Fill out the form below and one of our SEO experts will get back to you within 24 hours.</p>
+            
+            <form id="contactForm" class="contact-form">
+              <div class="form-group">
+                <label for="name">Full Name*</label>
+                <input type="text" id="name" name="name" required>
+                <div class="error-message" id="nameError"></div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+                <div class="error-message" id="phoneError"></div>
+              </div>
+              
+              <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company">
+              </div>
+              
+              <div class="form-group">
+                <label for="service">Service of Interest*</label>
+                <select id="service" name="service" required>
+                  <option value="">Select a Service</option>
+                  <option value="Technical SEO Audit">Technical SEO Audit</option>
+                  <option value="On-Page Optimization">On-Page Optimization</option>
+                  <option value="Content Strategy">Content Strategy</option>
+                  <option value="Link Building">Link Building</option>
+                  <option value="Local SEO">Local SEO</option>
+                  <option value="SEO Analytics & Reporting">SEO Analytics & Reporting</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="error-message" id="serviceError"></div>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Your Message*</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <div class="error-message" id="messageError"></div>
+              </div>
+              
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="newsletter" name="newsletter">
+                <label for="newsletter">Subscribe to our newsletter for SEO tips and updates</label>
+              </div>
+              
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <label for="privacy">I agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>*</label>
+                <div class="error-message" id="privacyError"></div>
+              </div>
+              
+              <div class="form-submit">
+                <button type="submit" class="btn">Send Message</button>
+              </div>
+              
+              <div id="formSuccess" class="success-message" style="display: none;">
+                Thank you for your message! We'll get back to you shortly.
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <div class="col col-md-12 col-lg-6">
+          <div class="map-container animate">
+            <h2 class="section-title">Our Location</h2>
+            <div class="map">
+              <!-- Replace with actual map embed code -->
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059445135!2d-74.25986613799748!3d40.69714941774136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1620160785557!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            
+            <div class="office-hours">
+              <h3>Office Hours</h3>
+              <ul>
+                <li><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM</li>
+                <li><strong>Saturday:</strong> 10:00 AM - 2:00 PM</li>
+                <li><strong>Sunday:</strong> Closed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title text-center">Frequently Asked Questions</h2>
+      <p class="text-center" style="margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">Find quick answers to common questions about working with us</p>
+      
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-button">
+            <span class="faq-title">What happens after I submit the contact form?</span>
+            <span class="faq-icon">
+              <svg class="icon-plus" width="16" height="16" viewBox="0 0 16 16">
+                <line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-answer">
+              <p>After submitting the contact form, you'll receive an automatic confirmation email. One of our SEO specialists will review your inquiry and get back to you within 24 business hours to discuss your needs and how we can help.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-button">
+            <span class="faq-title">Do you offer free consultations?</span>
+            <span class="faq-icon">
+              <svg class="icon-plus" width="16" height="16" viewBox="0 0 16 16">
+                <line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-answer">
+              <p>Yes, we offer a free 30-minute consultation to discuss your business goals, current SEO challenges, and how our services might help. During this call, we'll provide initial insights and recommendations for your website.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-button">
+            <span class="faq-title">What information should I prepare for our first meeting?</span>
+            <span class="faq-icon">
+              <svg class="icon-plus" width="16" height="16" viewBox="0 0 16 16">
+                <line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-answer">
+              <p>To make the most of our initial consultation, it's helpful to have information about your business goals, target audience, current marketing efforts, website analytics access (if available), and specific challenges you're facing with your online presence.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-button">
+            <span class="faq-title">How quickly can you start working on my project?</span>
+            <span class="faq-icon">
+              <svg class="icon-plus" width="16" height="16" viewBox="0 0 16 16">
+                <line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-answer">
+              <p>Once we've finalized the scope of work and signed the agreement, we typically begin work within 5-7 business days. For urgent projects, we may be able to accommodate a faster timeline depending on our current workload.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section" style="background-color: var(--dark); color: var(--light); padding: 80px 0;">
+    <div class="container text-center">
+      <h2 style="color: var(--light); margin-bottom: 20px;">Ready for a Free SEO Audit?</h2>
+      <p style="max-width: 700px; margin: 0 auto 30px;">Discover how your website is performing and identify opportunities for improvement with our complimentary SEO audit.</p>
+      <a href="#contactForm" class="btn">Request Free Audit</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-6 col-lg-4">
+          <div class="footer-logo">
+            <div class="logo">
+              <img src="https://via.placeholder.com/40" alt="RankIT Consultancy Logo">
+              <div class="logo-text">Rank<span>IT</span> Consultancy</div>
+            </div>
+          </div>
+          <p class="footer-about">RankIT Consultancy is a premier SEO agency dedicated to helping businesses improve their online visibility and achieve sustainable growth through effective search engine optimization strategies.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="col col-md-6 col-lg-2">
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="col col-md-6 col-lg-3">
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="services.html">SEO Audit</a></li>
+            <li><a href="services.html">On-Page Optimization</a></li>
+            <li><a href="services.html">Link Building</a></li>
+            <li><a href="services.html">Content Strategy</a></li>
+            <li><a href="services.html">Local SEO</a></li>
+          </ul>
+        </div>
+        
+        <div class="col col-md-6 col-lg-3">
+          <h4 class="footer-title">Contact Us</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> 123 SEO Street, Digital City</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> info@rankitconsultancy.com</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 RankIT Consultancy. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
