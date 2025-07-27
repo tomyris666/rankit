@@ -159,7 +159,6 @@ img {
 .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
 }
 
 .col {
