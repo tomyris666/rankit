@@ -155,64 +155,63 @@ img {
 .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-/* Flexbox Grid for Compatibility */
+/* Mobile-First Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+/* Legacy support for existing HTML structure */
 .row {
   display: flex;
   flex-wrap: wrap;
+  margin: -12px;
 }
 
 .col {
   flex: 1;
   min-width: 0;
+  padding: 12px;
 }
 
-.col-span-2 { flex: 2; }
-.col-span-3 { flex: 3; }
+/* Mobile-first responsive columns */
+.col-md-6,
+.col-lg-4 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 12px;
+}
 
-/* Legacy Grid Support for Existing HTML */
-.col-1 { flex: 0 0 8.33%; max-width: 8.33%; }
-.col-2 { flex: 0 0 16.66%; max-width: 16.66%; }
-.col-3 { flex: 0 0 25%; max-width: 25%; }
-.col-4 { flex: 0 0 33.33%; max-width: 33.33%; }
-.col-5 { flex: 0 0 41.66%; max-width: 41.66%; }
-.col-6 { flex: 0 0 50%; max-width: 50%; }
-.col-7 { flex: 0 0 58.33%; max-width: 58.33%; }
-.col-8 { flex: 0 0 66.66%; max-width: 66.66%; }
-.col-9 { flex: 0 0 75%; max-width: 75%; }
-.col-10 { flex: 0 0 83.33%; max-width: 83.33%; }
-.col-11 { flex: 0 0 91.66%; max-width: 91.66%; }
-.col-12 { flex: 0 0 100%; max-width: 100%; }
-
-/* Medium screens (tablets) */
 @media (min-width: 768px) {
-  .col-md-1 { flex: 0 0 8.33%; max-width: 8.33%; }
-  .col-md-2 { flex: 0 0 16.66%; max-width: 16.66%; }
-  .col-md-3 { flex: 0 0 25%; max-width: 25%; }
-  .col-md-4 { flex: 0 0 33.33%; max-width: 33.33%; }
-  .col-md-5 { flex: 0 0 41.66%; max-width: 41.66%; }
-  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
-  .col-md-7 { flex: 0 0 58.33%; max-width: 58.33%; }
-  .col-md-8 { flex: 0 0 66.66%; max-width: 66.66%; }
-  .col-md-9 { flex: 0 0 75%; max-width: 75%; }
-  .col-md-10 { flex: 0 0 83.33%; max-width: 83.33%; }
-  .col-md-11 { flex: 0 0 91.66%; max-width: 91.66%; }
-  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 
-/* Large screens (desktops) */
-@media (min-width: 992px) {
-  .col-lg-1 { flex: 0 0 8.33%; max-width: 8.33%; }
-  .col-lg-2 { flex: 0 0 16.66%; max-width: 16.66%; }
-  .col-lg-3 { flex: 0 0 25%; max-width: 25%; }
-  .col-lg-4 { flex: 0 0 33.33%; max-width: 33.33%; }
-  .col-lg-5 { flex: 0 0 41.66%; max-width: 41.66%; }
-  .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
-  .col-lg-7 { flex: 0 0 58.33%; max-width: 58.33%; }
-  .col-lg-8 { flex: 0 0 66.66%; max-width: 66.66%; }
-  .col-lg-9 { flex: 0 0 75%; max-width: 75%; }
-  .col-lg-10 { flex: 0 0 83.33%; max-width: 83.33%; }
-  .col-lg-11 { flex: 0 0 91.66%; max-width: 91.66%; }
-  .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
+@media (min-width: 1024px) {
+  .col-lg-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
 }
 
 /* Modern Sticky Header */
@@ -922,21 +921,9 @@ img {
     font-size: 1.1rem;
   }
   
-  /* Fix grid layout on mobile - force all columns to full width */
-  .row {
-    flex-direction: column;
+  /* Mobile-optimized services layout */
+  .services-grid {
     gap: 16px;
-  }
-  
-  .col,
-  .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
-  .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
-  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
-  .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
-  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
-  .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
-    flex: 0 0 100%;
-    max-width: 100%;
   }
   
   .grid-cols-2,
