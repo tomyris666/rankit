@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Rankit Consultancy",
+  "url": "https://rankitconsultancy.com/contact/",
+  "description": "Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+};
+---
+
+<BaseLayout
+  title="Contact — Rankit Consultancy"
+  description="Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+  schema={contactSchema}
+>
+
+  <div class="inner-page">
+    <div class="contact-card">
+      <div class="contact-card-row">
+        <span class="contact-card-label">Email</span>
+        <a href="mailto:hello@rankitconsultancy.com" class="contact-card-value">hello@rankitconsultancy.com</a>
+      </div>
+      <div class="contact-card-row">
+        <span class="contact-card-label">Phone</span>
+        <a href="tel:+6012345678" class="contact-card-value">+6012-345678</a>
+      </div>
+      <div class="contact-card-row">
+        <span class="contact-card-label">Address</span>
+        <span class="contact-card-value">xxxxxx</span>
+      </div>
+    </div>
+
+    <h1 class="headline scribble-target scribble-hidden">
+Let's talk.
+    </h1>
+
+    <p class="description scribble-target scribble-hidden">
+      Whether you need a full visibility audit, AI strategy consultation, or a custom data pipeline — reach out and we'll scope it together.
+    </p>
+
+    <a href="mailto:hello@rankitconsultancy.com" class="contact-line scribble-target scribble-hidden">hello@rankitconsultancy.com</a>
+  </div>
+
+</BaseLayout>

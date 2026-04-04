@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Rankit Consultancy",
+  "url": "https://rankitconsultancy.com/about/",
+  "description": "Learn about our approach to digital marketing — AI-driven insight, data science, and proven search strategies.",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Rankit Consultancy",
+    "url": "https://rankitconsultancy.com"
+  }
+};
+---
+
+<BaseLayout
+  title="About — Rankit Consultancy"
+  description="Learn about our approach to digital marketing — AI-driven insight, data science, and proven search strategies."
+  schema={aboutSchema}
+>
+
+  <div class="inner-page">
+    <h1 class="headline scribble-target scribble-hidden">
+We build visibility systems that compound over time.
+    </h1>
+
+    <p class="description scribble-target scribble-hidden">
+      Rankit Consultancy sits at the intersection of search, data science, and artificial intelligence. We don't chase algorithms — we engineer long-term growth frameworks that adapt as the landscape shifts.
+    </p>
+
+    <p class="description scribble-target scribble-hidden">
+      Our work spans technical SEO, AI-assisted content strategy, predictive analytics, and custom tooling. Every engagement starts with data and ends with measurable outcomes.
+    </p>
+
+    <a href="/contact/" class="contact-line scribble-target scribble-hidden">Work with us</a>
+  </div>
+
+</BaseLayout>

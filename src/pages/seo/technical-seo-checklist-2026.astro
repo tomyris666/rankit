@@ -1,0 +1,59 @@
+---
+import NoteLayout from '../../layouts/NoteLayout.astro';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Technical SEO Checklist for 2026',
+  description: 'A comprehensive checklist covering crawlability, indexation, Core Web Vitals, structured data, and the latest ranking factors.',
+  author: { '@type': 'Organization', name: 'Rankit Consultancy' },
+  datePublished: '2026-03-15',
+};
+---
+<NoteLayout
+  title="Technical SEO Checklist for 2026"
+  description="A comprehensive checklist covering crawlability, indexation, Core Web Vitals, structured data, and the latest ranking factors."
+  articleSlug="technical-seo-checklist-2026"
+  schema={schema}
+>
+  <p class="description scribble-target">Search engines in 2026 are faster, smarter, and less forgiving. This checklist covers the foundations that still matter and the new signals you cannot afford to ignore.</p>
+
+  <h2 class="note-heading">Crawlability &amp; Indexation</h2>
+  <ul class="note-list">
+    <li>Validate <code>robots.txt</code> — ensure no critical paths are blocked. Use the Robots Testing Tool in Search Console.</li>
+    <li>Submit an XML sitemap with <code>&lt;lastmod&gt;</code> dates that reflect genuine content updates, not deploy timestamps.</li>
+    <li>Check crawl budget allocation: large sites should use <code>IndexNow</code> for instant URL submission on content changes.</li>
+    <li>Canonical tags on every page — self-referencing canonicals prevent duplicate indexation from parameter variations.</li>
+    <li>Verify <code>hreflang</code> implementation for multi-language sites. Confirm reciprocal links and correct ISO codes.</li>
+  </ul>
+
+  <h2 class="note-heading">Core Web Vitals</h2>
+  <ul class="note-list">
+    <li><strong>LCP &lt; 2.5s</strong> — preload hero images, use responsive <code>srcset</code>, serve next-gen formats (AVIF → WebP → JPEG fallback).</li>
+    <li><strong>INP &lt; 200ms</strong> — audit long tasks with the Performance panel. Break up heavy JS with <code>scheduler.yield()</code>.</li>
+    <li><strong>CLS &lt; 0.1</strong> — set explicit dimensions on all media. Use <code>aspect-ratio</code> CSS for responsive embeds.</li>
+  </ul>
+
+  <h2 class="note-heading">Structured Data</h2>
+  <ul class="note-list">
+    <li>Implement <code>Organization</code>, <code>WebSite</code>, and <code>BreadcrumbList</code> schema at a minimum.</li>
+    <li>Add <code>Article</code> or <code>BlogPosting</code> schema to editorial content with <code>datePublished</code> and <code>author</code>.</li>
+    <li>Use <code>FAQPage</code> schema on pages that genuinely answer multiple questions — Google now cross-checks content against markup.</li>
+    <li>Test all markup in the Rich Results Test and monitor the Enhancements report in Search Console.</li>
+  </ul>
+
+  <h2 class="note-heading">Security &amp; Performance</h2>
+  <ul class="note-list">
+    <li>HTTPS everywhere — redirect all HTTP to HTTPS. Use HSTS headers with <code>includeSubDomains</code>.</li>
+    <li>Enable HTTP/2 (or HTTP/3) at the CDN layer. Verify with <code>curl -sI</code> or Chrome DevTools.</li>
+    <li>Implement a Content Security Policy that blocks inline scripts where possible.</li>
+    <li>Monitor server response times — aim for TTFB &lt; 400ms at the 75th percentile globally.</li>
+  </ul>
+
+  <h2 class="note-heading">2026-Specific Signals</h2>
+  <ul class="note-list">
+    <li><strong>AI Overview optimisation</strong> — structure content with clear definitions, step lists, and summary paragraphs that LLMs can extract.</li>
+    <li><strong>Author entity signals</strong> — link author pages to social profiles and publications. Google's entity graph increasingly weights author authority.</li>
+    <li><strong>Interaction to Next Paint (INP)</strong> — now a Core Web Vital. Sites that rely on heavy client-side frameworks must optimise or face ranking pressure.</li>
+  </ul>
+</NoteLayout>

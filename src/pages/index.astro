@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Rankit Consultancy",
+  "url": "https://rankitconsultancy.com",
+  "description": "A digital marketing consultancy specialising in cutting-edge technologies.",
+  "areaServed": "Worldwide",
+  "serviceType": ["Digital Marketing", "SEO", "AI Strategy", "Data Analytics"]
+};
+---
+
+<BaseLayout
+  title="Rankit Consultancy"
+  description="A digital marketing consultancy specialising in cutting-edge technologies."
+  schema={websiteSchema}
+>
+
+  <div class="page">
+    <div class="hero-text">
+      <h1 class="headline scribble-target scribble-hidden">
+Digital marketing consultancy specialising in cutting-edge technologies.
+      </h1>
+
+      <p class="description scribble-target scribble-hidden">
+        We engineer visibility systems that compound over time. AI-driven insight, data science, and proven search strategies — built for brands that think long-term.
+      </p>
+
+      <a href="/contact/" class="contact-line scribble-target scribble-hidden">Get in touch</a>
+    </div>
+
+    <div class="hero-image-side">
+      <video
+        autoplay
+        loop
+        muted
+        playsinline
+        class="hero-image"
+        aria-label="Abstract wireframe animation of a head"
+      >
+        <source src="/images/stones_loop.webm" type="video/webm" />
+        <source src="/images/stones_loop.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+
+</BaseLayout>
+
