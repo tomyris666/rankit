@@ -172,13 +172,12 @@ const navItems = [
       initScribble();
       initNavScroll();
 
-      // Re-trigger autoplay on hero video after ViewTransitions swap.
-      // Browsers don't re-honour the `autoplay` attribute on programmatically
-      // inserted elements, so we call play() explicitly.
-      document.querySelectorAll('video[autoplay]').forEach((el) => {
-        const v = el as HTMLVideoElement;
-        v.load();
-        v.play().catch(() => {}); // silently ignore if browser blocks
+      // Re-trigger loading of any hero images after ViewTransitions swap
+      document.querySelectorAll('img.hero-image').forEach((el) => {
+        const img = el as HTMLImageElement;
+        if (!img.complete || img.naturalWidth === 0) {
+          const src = img.src; img.src = ''; img.src = src;
+        }
       });
     });
 
