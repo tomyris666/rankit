@@ -1124,7 +1124,7 @@ a.contact-card-value:hover {
 .carousel-cta-wrapper {
   padding: 2rem 3rem 0;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .carousel-read-more {
@@ -1151,7 +1151,7 @@ a.contact-card-value:hover {
   gap: 1.75rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 1.5rem 4rem 2.5rem;
+  padding: 1.5rem calc(50% - 120px) 2.5rem;
   scrollbar-width: none;
   cursor: grab;
 }
@@ -1362,15 +1362,7 @@ a.contact-card-value:hover {
   }
 
   .hero-image-side::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20%;
-    background: linear-gradient(to bottom, transparent, #ffffff);
-    pointer-events: none;
-    z-index: 1;
+    display: none;
   }
 
   .hero-image {
