@@ -1153,6 +1153,12 @@ a.contact-card-value:hover {
   padding: 1.5rem calc(50% - 120px) 2.5rem;
   scrollbar-width: none;
   cursor: grab;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.notes-carousel.carousel-ready {
+  opacity: 1;
 }
 
 .notes-carousel::-webkit-scrollbar {
@@ -1346,7 +1352,7 @@ a.contact-card-value:hover {
   .hero-text {
     position: relative;
     z-index: 2;
-    margin-top: -6rem;
+    margin-top: calc(-55vh * 0.4);
     padding: 0 1.5rem 3rem;
     align-items: center;
     text-align: center;

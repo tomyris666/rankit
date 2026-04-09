@@ -168,11 +168,13 @@ Digital marketing consultancy specialising in cutting-edge technologies.
         });
       }
 
-      // Initialise: jump scroll to start of real section
+      // Initialise: jump scroll to start of real section, then reveal
       requestAnimationFrame(() => {
         const sw = sectionWidth();
         if (sw > 0) carousel!.scrollLeft = sw;
         update();
+        // Reveal only after the scroll jump is done — prevents blink
+        carousel!.classList.add('carousel-ready');
         requestAnimationFrame(update);
       });
 

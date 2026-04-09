@@ -171,11 +171,15 @@ const navItems = [
     document.addEventListener('astro:page-load', () => {
       initScribble();
       initNavScroll();
+    });
 
-      // Re-trigger hero video autoplay after ViewTransitions swap
+    // Re-trigger hero video ONLY after a ViewTransitions navigation swap
+    // (not on initial hard refresh — autoplay attribute handles that, and
+    //  v.load() would cause a blank-frame blink on refresh)
+    document.addEventListener('astro:after-swap', () => {
       document.querySelectorAll('video[autoplay]').forEach((el) => {
         const v = el as HTMLVideoElement;
-        v.load(); v.play().catch(() => {});
+        v.play().catch(() => {});
       });
     });
 
