@@ -17,8 +17,6 @@ const websiteSchema = {
   description="A digital marketing consultancy specialising in cutting-edge technologies."
   schema={websiteSchema}
 >
-  <canvas id="wave-bg" aria-hidden="true"></canvas>
-
   <div class="page">
     <div class="hero-text">
       <h1 class="headline scribble-target scribble-hidden">
@@ -33,103 +31,18 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     </div>
 
     <div class="hero-image-side">
-      <img
-        src="/images/stones.png"
-        alt="Stacked stones"
+      <video
+        autoplay
+        loop
+        muted
+        playsinline
         class="hero-image"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
+        aria-label="Abstract wireframe animation of a head"
+      >
+        <source src="/images/stones_loop.webm" type="video/webm" />
+        <source src="/images/stones_loop.mp4" type="video/mp4" />
+      </video>
     </div>
   </div>
-
-  <script>
-    let _waveId: number | null = null;
-
-    function initWave() {
-      const canvas = document.getElementById('wave-bg') as HTMLCanvasElement | null;
-      if (!canvas) return;
-      if (_waveId !== null) { cancelAnimationFrame(_waveId); _waveId = null; }
-
-      const ctx = canvas.getContext('2d')!;
-      let W = 0, H = 0;
-
-      function resize() {
-        W = canvas!.width = window.innerWidth;
-        H = canvas!.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      // Grid covers the full viewport — wide, dense, low camera angle
-      const COLS = 48, ROWS = 32;
-      const GW = 120, GD = 80;       // world-space grid dimensions
-      const FOV = 380;
-      const CAM_Y = 6, CAM_Z = -10;  // camera close & low for wide coverage
-
-      function wy(wx: number, wz: number, t: number) {
-        return Math.sin(wx * 0.18 + t) * Math.cos(wz * 0.14 + t * 0.6) * 2.8
-             + Math.sin(wx * 0.07 - t * 0.4 + 1.2) * 1.4
-             + Math.cos(wz * 0.22 + t * 0.35) * 1.0;
-      }
-
-      function proj(wx: number, y: number, wz: number): [number, number] | null {
-        const rz = wz - CAM_Z;
-        if (rz <= 0) return null;
-        const s = FOV / rz;
-        // Horizon sits at ~55% down the screen so waves span top to bottom
-        return [W / 2 + wx * s, H * 0.55 + (y - CAM_Y) * s];
-      }
-
-      let t = 0;
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        t += 0.008;
-
-        // Lines along depth (Z)
-        for (let c = 0; c <= COLS; c++) {
-          const wx = (c / COLS) * GW - GW / 2;
-          const edgeFade = 1 - Math.pow(Math.abs(c / COLS - 0.5) * 2, 1.5);
-          ctx.beginPath(); let go = false;
-          for (let r = 0; r <= ROWS; r++) {
-            const wz = (r / ROWS) * GD - 4;
-            const p = proj(wx, wy(wx, wz, t), wz);
-            if (!p) continue;
-            if (!go) { ctx.moveTo(p[0], p[1]); go = true; } else ctx.lineTo(p[0], p[1]);
-          }
-          ctx.strokeStyle = `rgba(114,47,55,${(0.06 * edgeFade).toFixed(3)})`;
-          ctx.lineWidth = 0.9; ctx.stroke();
-        }
-
-        // Lines across width (X)
-        for (let r = 0; r <= ROWS; r++) {
-          const wz = (r / ROWS) * GD - 4;
-          const d = r / ROWS;
-          ctx.beginPath(); let go = false;
-          for (let c = 0; c <= COLS; c++) {
-            const wx = (c / COLS) * GW - GW / 2;
-            const p = proj(wx, wy(wx, wz, t), wz);
-            if (!p) continue;
-            if (!go) { ctx.moveTo(p[0], p[1]); go = true; } else ctx.lineTo(p[0], p[1]);
-          }
-          ctx.strokeStyle = `rgba(114,47,55,${(0.03 + d * 0.12).toFixed(3)})`;
-          ctx.lineWidth = 0.5 + d * 1.2; ctx.stroke();
-        }
-
-        _waveId = requestAnimationFrame(draw);
-      }
-      draw();
-    }
-
-    document.addEventListener('astro:page-load', () => {
-      if (document.getElementById('wave-bg')) initWave();
-    });
-
-    // Cancel animation when navigating away
-    document.addEventListener('astro:before-swap', () => {
-      if (_waveId !== null) { cancelAnimationFrame(_waveId); _waveId = null; }
-    });
-  </script>
 </BaseLayout>
 

@@ -172,12 +172,10 @@ const navItems = [
       initScribble();
       initNavScroll();
 
-      // Re-trigger loading of any hero images after ViewTransitions swap
-      document.querySelectorAll('img.hero-image').forEach((el) => {
-        const img = el as HTMLImageElement;
-        if (!img.complete || img.naturalWidth === 0) {
-          const src = img.src; img.src = ''; img.src = src;
-        }
+      // Re-trigger hero video autoplay after ViewTransitions swap
+      document.querySelectorAll('video[autoplay]').forEach((el) => {
+        const v = el as HTMLVideoElement;
+        v.load(); v.play().catch(() => {});
       });
     });
 
