@@ -17,6 +17,7 @@ const websiteSchema = {
   description="A digital marketing consultancy specialising in cutting-edge technologies."
   schema={websiteSchema}
 >
+  <canvas id="wave-bg" aria-hidden="true"></canvas>
 
   <div class="page">
     <div class="hero-text">
@@ -46,5 +47,86 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     </div>
   </div>
 
+  <script>
+    let _waveId: number | null = null;
+
+    function initWave() {
+      const canvas = document.getElementById('wave-bg') as HTMLCanvasElement | null;
+      if (!canvas) return;
+      if (_waveId !== null) { cancelAnimationFrame(_waveId); _waveId = null; }
+
+      const ctx = canvas.getContext('2d')!;
+      let W = 0, H = 0;
+
+      function resize() {
+        W = canvas!.width = window.innerWidth;
+        H = canvas!.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const COLS = 32, ROWS = 22, GW = 44, GD = 32, FOV = 480, CAM_Y = 10, CAM_Z = -18;
+
+      function wy(wx: number, wz: number, t: number) {
+        return Math.sin(wx * 0.38 + t) * Math.cos(wz * 0.28 + t * 0.65) * 1.6
+             + Math.sin(wx * 0.14 - t * 0.45 + 1.2) * 0.7;
+      }
+
+      function proj(wx: number, y: number, wz: number): [number, number] | null {
+        const rz = wz - CAM_Z;
+        if (rz <= 0) return null;
+        const s = FOV / rz;
+        return [W / 2 + wx * s, H * 0.52 + (y - CAM_Y) * s];
+      }
+
+      let t = 0;
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        t += 0.010;
+
+        // Lines along depth (Z)
+        for (let c = 0; c <= COLS; c++) {
+          const wx = (c / COLS) * GW - GW / 2;
+          const fade = Math.abs(c / COLS - 0.5) * 2;
+          ctx.beginPath(); let go = false;
+          for (let r = 0; r <= ROWS; r++) {
+            const wz = (r / ROWS) * GD - GD / 2 + 6;
+            const p = proj(wx, wy(wx, wz, t), wz);
+            if (!p) continue;
+            if (!go) { ctx.moveTo(p[0], p[1]); go = true; } else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.strokeStyle = `rgba(114,47,55,${(0.07 - fade * 0.04).toFixed(3)})`;
+          ctx.lineWidth = 0.8; ctx.stroke();
+        }
+
+        // Lines across width (X)
+        for (let r = 0; r <= ROWS; r++) {
+          const wz = (r / ROWS) * GD - GD / 2 + 6;
+          const d = r / ROWS;
+          ctx.beginPath(); let go = false;
+          for (let c = 0; c <= COLS; c++) {
+            const wx = (c / COLS) * GW - GW / 2;
+            const p = proj(wx, wy(wx, wz, t), wz);
+            if (!p) continue;
+            if (!go) { ctx.moveTo(p[0], p[1]); go = true; } else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.strokeStyle = `rgba(114,47,55,${(0.04 + d * 0.10).toFixed(3)})`;
+          ctx.lineWidth = d * 1.2; ctx.stroke();
+        }
+
+        _waveId = requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    document.addEventListener('astro:page-load', () => {
+      if (document.getElementById('wave-bg')) initWave();
+    });
+
+    // Cancel animation when navigating away
+    document.addEventListener('astro:before-swap', () => {
+      if (_waveId !== null) { cancelAnimationFrame(_waveId); _waveId = null; }
+    });
+  </script>
 </BaseLayout>
 
