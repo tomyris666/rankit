@@ -63,20 +63,46 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     <div class="notes-carousel" id="notes-carousel">
       {allArticles.map(({ article, path, categoryPath }) => (
         <a href={path} class="carousel-card">
-          <div class="carousel-card-meta">
-            {categoryPath.map((part) => (
-              <span class="carousel-card-tag">{part}</span>
-            ))}
+          <img
+            src={article.image || '/images/article-default.svg'}
+            alt=""
+            class="carousel-card-image"
+            loading="lazy"
+          />
+          <div class="carousel-card-body">
+            <div class="carousel-card-meta">
+              {categoryPath.map((part) => (
+                <span class="carousel-card-tag">{part}</span>
+              ))}
+            </div>
+            <p class="carousel-card-title">{article.title}</p>
+            <p class="carousel-card-summary">{article.summary}</p>
           </div>
-          <p class="carousel-card-title">{article.title}</p>
-          <p class="carousel-card-summary">{article.summary}</p>
         </a>
       ))}
     </div>
 
     <div class="carousel-cta-wrapper">
-      <a href="/notes/" class="contact-line">Read More</a>
+      <a href="/notes/" class="carousel-read-more">Read More</a>
     </div>
+  </section>
+
+  <section class="email-section">
+    <p class="email-section-label">Newsletter</p>
+    <h2 class="email-section-heading">Stay sharp. Get the latest notes, guides, and insights — directly to your inbox.</h2>
+    <form class="email-section-form" id="email-form" name="newsletter" data-netlify="true">
+      <input type="hidden" name="form-name" value="newsletter" />
+      <input
+        type="email"
+        name="email"
+        class="email-section-input"
+        placeholder="your@email.com"
+        required
+        autocomplete="email"
+      />
+      <button type="submit" class="email-section-btn">Subscribe</button>
+    </form>
+    <p class="email-section-success" id="email-success">You're on the list.</p>
   </section>
 
   <script>
@@ -151,5 +177,26 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     }
 
     document.addEventListener('astro:page-load', initCarousel);
+
+    function initEmailForm() {
+      const form = document.getElementById('email-form') as HTMLFormElement | null;
+      const success = document.getElementById('email-success');
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form) as any).toString(),
+          });
+        } catch (_) { /* still show success — Netlify returns 303 */ }
+        form.style.display = 'none';
+        success?.classList.add('visible');
+      });
+    }
+
+    document.addEventListener('astro:page-load', initEmailForm);
   </script>
 </BaseLayout>

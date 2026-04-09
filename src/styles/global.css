@@ -627,8 +627,21 @@ a.contact-card-value:hover {
   display: block;
   text-decoration: none;
   border: 1px solid var(--color-border);
-  padding: 1rem 1.25rem;
+  padding: 0;
   transition: border-color 0.2s;
+  overflow: hidden;
+}
+
+.search-result-card-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  background: #f2f1ef;
+}
+
+.search-result-card-body {
+  padding: 1rem 1.25rem;
 }
 
 .search-result-card:hover {
@@ -1044,8 +1057,7 @@ a.contact-card-value:hover {
 
 /* ── Notes Carousel (Homepage) ── */
 .notes-carousel-section {
-  padding: 3.5rem 0 3rem;
-  border-top: 1px solid var(--color-border);
+  padding: 2.5rem 0 3rem;
   overflow: hidden;
 }
 
@@ -1062,28 +1074,24 @@ a.contact-card-value:hover {
 .notes-carousel-header-left {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .notes-carousel-label {
   font-family: var(--font-mono);
-  font-size: 1.6rem;
-  font-weight: 300;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  color: var(--color-white);
-  background-color: var(--color-burgundy);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
   display: inline-block;
   align-self: flex-start;
-  padding: 0 0.15em;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
 }
 
 .notes-carousel-description {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   line-height: 1.7;
   max-width: 480px;
 }
@@ -1108,15 +1116,34 @@ a.contact-card-value:hover {
 }
 
 .carousel-btn:hover {
-  color: var(--color-burgundy);
-  border-color: var(--color-burgundy);
+  color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 /* ── Read More below carousel ── */
 .carousel-cta-wrapper {
-  padding: 2.5rem 3rem 0;
+  padding: 2rem 3rem 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+.carousel-read-more {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
+  text-decoration: none;
+  padding: 0.55em 1.3em;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+
+.carousel-read-more:hover {
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .notes-carousel {
@@ -1137,15 +1164,28 @@ a.contact-card-value:hover {
   scroll-snap-align: center;
   flex: 0 0 240px;
   border: 1px solid var(--color-border);
-  padding: 1.5rem;
+  padding: 0;
   text-decoration: none;
   display: block;
   will-change: transform, opacity;
   transition: border-color 0.2s;
+  overflow: hidden;
 }
 
 .carousel-card:hover {
   border-color: var(--color-burgundy);
+}
+
+.carousel-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  background: #f2f1ef;
+}
+
+.carousel-card-body {
+  padding: 1.2rem 1.5rem 1.5rem;
 }
 
 .carousel-card-meta {
@@ -1180,6 +1220,86 @@ a.contact-card-value:hover {
   font-size: 0.62rem;
   color: var(--color-text-muted);
   line-height: 1.8;
+}
+
+/* ── Email Capture Section ── */
+.email-section {
+  padding: 4rem 3rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 540px;
+}
+
+.email-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.email-section-heading {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-black);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.email-section-form {
+  display: flex;
+  gap: 0;
+}
+
+.email-section-input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-black);
+  background: transparent;
+  border: 1px solid var(--color-black);
+  border-right: none;
+  padding: 0.6em 0.9em;
+  outline: none;
+}
+
+.email-section-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.email-section-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  background: var(--color-black);
+  border: 1px solid var(--color-black);
+  padding: 0.6em 1.1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.email-section-btn:hover {
+  background: var(--color-text-muted);
+  border-color: var(--color-text-muted);
+}
+
+.email-section-success {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  display: none;
+}
+
+.email-section-success.visible {
+  display: block;
 }
 
 /* ── Responsive ── */
@@ -1247,7 +1367,7 @@ a.contact-card-value:hover {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 38%;
+    height: 20%;
     background: linear-gradient(to bottom, transparent, #ffffff);
     pointer-events: none;
     z-index: 1;
@@ -1284,7 +1404,11 @@ a.contact-card-value:hover {
   }
 
   .notes-carousel-label {
-    font-size: 1.2rem;
+    font-size: 0.68rem;
+  }
+
+  .email-section {
+    padding: 3rem 1.5rem;
   }
 
   .carousel-controls {

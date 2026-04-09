@@ -86,12 +86,20 @@ const schema = {
               data-title={article.title}
               data-tags={categoryPath.join(' ').toLowerCase()}
             >
-              <div class="search-result-meta">
-                <span class="search-result-tag">{parentName}</span>
-                {leafName !== parentName && <span class="search-result-tag">{leafName}</span>}
+              <img
+                src={article.image || '/images/article-default.svg'}
+                alt=""
+                class="search-result-card-image"
+                loading="lazy"
+              />
+              <div class="search-result-card-body">
+                <div class="search-result-meta">
+                  <span class="search-result-tag">{parentName}</span>
+                  {leafName !== parentName && <span class="search-result-tag">{leafName}</span>}
+                </div>
+                <p class="search-result-title">{article.title}</p>
+                <p class="search-result-summary">{article.summary}</p>
               </div>
-              <p class="search-result-title">{article.title}</p>
-              <p class="search-result-summary">{article.summary}</p>
             </a>
           );
         })}
