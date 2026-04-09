@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllArticles } from '../data/notes-tree';
 
 const allArticles = getAllArticles();
+const carouselArticles = allArticles.slice(0, 6);
 
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -61,7 +62,7 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     </div>
 
     <div class="notes-carousel" id="notes-carousel">
-      {allArticles.map(({ article, path, categoryPath }) => (
+      {carouselArticles.map(({ article, path, categoryPath }) => (
         <a href={path} class="carousel-card">
           <img
             src={article.image || '/images/article-default.svg'}
@@ -106,14 +107,49 @@ Digital marketing consultancy specialising in cutting-edge technologies.
   </section>
 
   <script>
+    // ── Infinite loop carousel ──────────────────────────────────────────
+    let carouselAbort: AbortController | null = null;
+
     function initCarousel() {
+      carouselAbort?.abort();
+      carouselAbort = new AbortController();
+      const { signal } = carouselAbort;
+
       const carousel = document.getElementById('notes-carousel') as HTMLElement | null;
       if (!carousel) return;
 
-      const cards = Array.from(carousel.querySelectorAll('.carousel-card')) as HTMLElement[];
+      // Grab original cards before we clone anything
+      const origCards = Array.from(
+        carousel.querySelectorAll('.carousel-card')
+      ) as HTMLElement[];
+      const n = origCards.length;
+      if (n === 0) return;
 
+      // Build: [clone set | real set | clone set]
+      // Prepend clones in reverse order so they appear in correct left-to-right order
+      for (let i = n - 1; i >= 0; i--) {
+        carousel.insertBefore(origCards[i].cloneNode(true), carousel.firstChild);
+      }
+      // Append clones in forward order
+      for (let i = 0; i < n; i++) {
+        carousel.appendChild(origCards[i].cloneNode(true));
+      }
+
+      function getCards() {
+        return Array.from(carousel!.querySelectorAll('.carousel-card')) as HTMLElement[];
+      }
+
+      // Distance from cards[0] to cards[n] = one full loop section
+      function sectionWidth(): number {
+        const cards = getCards();
+        if (cards.length <= n) return 0;
+        return cards[n].offsetLeft - cards[0].offsetLeft;
+      }
+
+      // 3-D wheel effect
       function update() {
-        const cr = carousel.getBoundingClientRect();
+        const cards = getCards();
+        const cr = carousel!.getBoundingClientRect();
         const centerX = cr.left + cr.width / 2;
 
         cards.forEach((card) => {
@@ -132,52 +168,73 @@ Digital marketing consultancy specialising in cutting-edge technologies.
         });
       }
 
-      carousel.addEventListener('scroll', update, { passive: true });
+      // Initialise: jump scroll to start of real section
+      requestAnimationFrame(() => {
+        const sw = sectionWidth();
+        if (sw > 0) carousel!.scrollLeft = sw;
+        update();
+        requestAnimationFrame(update);
+      });
+
+      // Scroll handler: teleport seamlessly when crossing into clone zones
+      carousel.addEventListener('scroll', () => {
+        const sw = sectionWidth();
+        if (sw <= 0) return;
+        // In leading clone zone → jump forward by one section
+        if (carousel!.scrollLeft < sw) {
+          carousel!.scrollLeft += sw;
+        // In trailing clone zone → jump back by one section
+        } else if (carousel!.scrollLeft >= 2 * sw) {
+          carousel!.scrollLeft -= sw;
+        }
+        update();
+      }, { passive: true, signal });
 
       // Mouse drag
       let dragging = false;
       let startX = 0;
-      let startScrollLeft = 0;
+      let startSL = 0;
 
       carousel.addEventListener('mousedown', (e) => {
         dragging = true;
         startX = e.clientX;
-        startScrollLeft = carousel.scrollLeft;
-        carousel.style.cursor = 'grabbing';
+        startSL = carousel!.scrollLeft;
+        carousel!.style.cursor = 'grabbing';
         e.preventDefault();
-      });
+      }, { signal });
 
       document.addEventListener('mouseup', () => {
         if (!dragging) return;
         dragging = false;
-        carousel.style.cursor = 'grab';
-      });
+        carousel!.style.cursor = 'grab';
+      }, { signal });
 
       document.addEventListener('mousemove', (e) => {
         if (!dragging) return;
-        carousel.scrollLeft = startScrollLeft - (e.clientX - startX);
-      });
+        carousel!.scrollLeft = startSL - (e.clientX - startX);
+      }, { signal });
 
-      // Prev / Next buttons
+      // Prev / Next — instant scroll (smooth fights the loop teleport)
       const prevBtn = document.getElementById('carousel-prev');
       const nextBtn = document.getElementById('carousel-next');
-      const cardWidth = (cards[0]?.offsetWidth || 240) + 28; // card + gap (1.75rem ≈ 28px)
+
+      function cardStep() {
+        const c = carousel!.querySelector('.carousel-card') as HTMLElement | null;
+        return (c?.offsetWidth || 240) + 28;
+      }
 
       prevBtn?.addEventListener('click', () => {
-        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-      });
+        carousel!.scrollLeft -= cardStep();
+      }, { signal });
 
       nextBtn?.addEventListener('click', () => {
-        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
-      });
-
-      // Initial render
-      update();
-      requestAnimationFrame(() => requestAnimationFrame(update));
+        carousel!.scrollLeft += cardStep();
+      }, { signal });
     }
 
     document.addEventListener('astro:page-load', initCarousel);
 
+    // ── Newsletter form ─────────────────────────────────────────────────
     function initEmailForm() {
       const form = document.getElementById('email-form') as HTMLFormElement | null;
       const success = document.getElementById('email-success');
@@ -191,7 +248,7 @@ Digital marketing consultancy specialising in cutting-edge technologies.
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(new FormData(form) as any).toString(),
           });
-        } catch (_) { /* still show success — Netlify returns 303 */ }
+        } catch (_) { /* Netlify returns 303, fetch may reject — still show success */ }
         form.style.display = 'none';
         success?.classList.add('visible');
       });

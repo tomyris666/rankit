@@ -1150,7 +1150,6 @@ a.contact-card-value:hover {
   display: flex;
   gap: 1.75rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   padding: 1.5rem calc(50% - 120px) 2.5rem;
   scrollbar-width: none;
   cursor: grab;
@@ -1161,7 +1160,6 @@ a.contact-card-value:hover {
 }
 
 .carousel-card {
-  scroll-snap-align: center;
   flex: 0 0 240px;
   border: 1px solid var(--color-border);
   padding: 0;
@@ -1348,7 +1346,7 @@ a.contact-card-value:hover {
   .hero-text {
     position: relative;
     z-index: 2;
-    margin-top: -5rem;
+    margin-top: -6rem;
     padding: 0 1.5rem 3rem;
     align-items: center;
     text-align: center;
@@ -1359,6 +1357,7 @@ a.contact-card-value:hover {
     padding: 0;
     margin-top: var(--nav-height);
     position: relative;
+    overflow: visible;
   }
 
   .hero-image-side::after {
@@ -1368,7 +1367,8 @@ a.contact-card-value:hover {
   .hero-image {
     width: 100%;
     max-width: 100%;
-    height: 280px;
+    height: 55vh;
+    min-height: 280px;
     object-fit: cover;
     object-position: top center;
     display: block;
