@@ -70,6 +70,11 @@ const schema = {
         />
       </div>
 
+      <div class="notes-filter-row">
+        <button class="notes-filter-btn" data-filter="digital marketing">Digital Marketing</button>
+        <button class="notes-filter-btn" data-filter="artificial intelligence">Artificial Intelligence</button>
+      </div>
+
       <div id="notes-all-cards" class="search-results">
         {allArticles.map(({ article, path, categoryPath }) => {
           const parentName = categoryPath[0] || '';
@@ -127,20 +132,44 @@ const schema = {
         }, { signal });
       });
 
-      // Search — filter static cards
+      // Search + filter
       const searchInput = document.getElementById('notes-search') as HTMLInputElement | null;
       const allCards = Array.from(
         document.querySelectorAll('#notes-all-cards .search-result-card')
       ) as HTMLElement[];
+      const filterBtns = Array.from(
+        document.querySelectorAll('.notes-filter-btn')
+      ) as HTMLButtonElement[];
 
-      searchInput?.addEventListener('input', () => {
-        const q = searchInput.value.trim().toLowerCase();
+      let activeFilter = '';
+
+      function applyFilters() {
+        const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
         allCards.forEach((card) => {
           const title = (card.dataset.title || '').toLowerCase();
           const tags = (card.dataset.tags || '').toLowerCase();
-          card.hidden = !!q && !title.includes(q) && !tags.includes(q);
+          const matchesText = !q || title.includes(q) || tags.includes(q);
+          const matchesFilter = !activeFilter || tags.includes(activeFilter);
+          card.hidden = !(matchesText && matchesFilter);
         });
-      }, { signal });
+      }
+
+      searchInput?.addEventListener('input', applyFilters, { signal });
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const f = btn.dataset.filter || '';
+          if (activeFilter === f) {
+            activeFilter = '';
+            btn.classList.remove('notes-filter-active');
+          } else {
+            activeFilter = f;
+            filterBtns.forEach((b) => b.classList.remove('notes-filter-active'));
+            btn.classList.add('notes-filter-active');
+          }
+          applyFilters();
+        }, { signal });
+      });
     }
 
     document.addEventListener('astro:page-load', initNotes);

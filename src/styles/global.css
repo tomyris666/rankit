@@ -22,6 +22,8 @@
   padding: 0;
 }
 
+[hidden] { display: none !important; }
+
 html {
   scroll-behavior: smooth;
 }
@@ -574,6 +576,39 @@ a.contact-card-value:hover {
   -webkit-appearance: none;
 }
 
+/* ── Notes Filter Buttons ── */
+.notes-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.notes-filter-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  padding: 0.35em 0.85em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.notes-filter-btn:hover {
+  border-color: var(--color-burgundy);
+  color: var(--color-burgundy);
+}
+
+.notes-filter-btn.notes-filter-active {
+  background: var(--color-burgundy);
+  border-color: var(--color-burgundy);
+  color: var(--color-white);
+}
+
 .search-results {
   display: flex;
   flex-direction: column;
@@ -1039,6 +1074,7 @@ a.contact-card-value:hover {
   color: var(--color-white);
   background-color: var(--color-burgundy);
   display: inline-block;
+  align-self: flex-start;
   padding: 0 0.15em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
@@ -1211,7 +1247,7 @@ a.contact-card-value:hover {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 65%;
+    height: 38%;
     background: linear-gradient(to bottom, transparent, #ffffff);
     pointer-events: none;
     z-index: 1;
