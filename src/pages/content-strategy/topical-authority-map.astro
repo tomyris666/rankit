@@ -1,0 +1,58 @@
+---
+import NoteLayout from '../../layouts/NoteLayout.astro';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Building a Topical Authority Map',
+  description: 'How to map your site\'s content against a topic cluster model and identify the gaps that prevent Google from treating you as a category authority.',
+  author: { '@type': 'Organization', name: 'Rankit Consultancy' },
+  datePublished: '2026-04-03',
+};
+---
+<NoteLayout
+  title="Building a Topical Authority Map"
+  description="How to map your site's content against a topic cluster model and identify the gaps that prevent Google from treating you as a category authority."
+  articleSlug="topical-authority-map"
+  schema={schema}
+>
+  <p class="description scribble-target">Ranking for a single keyword is not a content strategy. Topical authority is built by covering an entire subject domain comprehensively — so that Google treats your site as a definitive source, not a one-off resource.</p>
+
+  <h2 class="note-heading">What Topical Authority Means in Practice</h2>
+  <p class="note-text">Google evaluates content quality in context. A single excellent article on a topic can rank, but its ceiling is limited without supporting content that demonstrates depth across the surrounding subject. Sites that own a topic — covering the core, the sub-topics, and the adjacent questions — receive sustained ranking advantages that individual posts cannot achieve in isolation.</p>
+  <ul class="note-list">
+    <li>Topical authority is built at the domain level, not the page level. Every relevant article you publish adds to — or detracts from — your domain's authority signal in a topic.</li>
+    <li>Thin or shallow content in a topic area actively harms authority. It is better to publish fewer, deeper articles than many shallow ones.</li>
+    <li>Internal linking is the mechanism that communicates your topic structure to Google. Without it, even strong content sits in isolation.</li>
+  </ul>
+
+  <h2 class="note-heading">Step 1 — Define Your Topic Universe</h2>
+  <ul class="note-list">
+    <li>Choose two to four core topics where you have genuine expertise and commercial relevance. Trying to build authority in ten topics simultaneously dilutes everything.</li>
+    <li>For each core topic, identify the primary keyword cluster: the main term, its semantic variants, and the top-level questions associated with it.</li>
+    <li>Use tools like Semrush's Topic Research, Ahrefs' Content Gap, or Google's People Also Ask to map the full question space around each topic.</li>
+  </ul>
+
+  <h2 class="note-heading">Step 2 — Audit Existing Coverage</h2>
+  <ul class="note-list">
+    <li>Export all indexed URLs from Google Search Console and categorise them by topic.</li>
+    <li>For each topic, score existing content: Does it cover the core intent? What is the current ranking position and traffic? Is it thin, medium, or comprehensive?</li>
+    <li>Identify coverage gaps — sub-topics in your universe that have no existing URL, or where competitors significantly outperform your current content.</li>
+    <li>Flag cannibalisation issues: multiple URLs targeting the same or near-identical intent. These need consolidation before new content is added.</li>
+  </ul>
+
+  <h2 class="note-heading">Step 3 — Build the Authority Map</h2>
+  <ul class="note-list">
+    <li>Create a visual map (spreadsheet or diagram) showing your pillar content — the comprehensive hub pages — and the supporting cluster articles around each pillar.</li>
+    <li>Each cluster article should target a specific sub-question and link back to the pillar. The pillar should link out to each cluster article.</li>
+    <li>Prioritise gap-filling content in areas where you have existing authority signals. Building adjacent to strength is faster than starting from zero in a new area.</li>
+    <li>Set a publishing cadence that matches the size of the gap — do not try to fill six months of content backlog in one month. Quality of coverage matters more than speed.</li>
+  </ul>
+
+  <h2 class="note-heading">Measuring Authority Growth</h2>
+  <ul class="note-list">
+    <li>Track topic-level visibility in Semrush or Sistrix, not just individual keyword rankings. A rising visibility score across a topic cluster is the authority signal you are building toward.</li>
+    <li>Monitor Share of Voice within your topic: what percentage of available clicks for your target keywords do you capture, relative to competitors?</li>
+    <li>Watch for ranking lift on cluster articles after publishing supporting content. This correlation — new article published, related articles lift — is evidence that topical authority is accumulating.</li>
+  </ul>
+</NoteLayout>

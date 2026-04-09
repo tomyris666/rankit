@@ -173,7 +173,7 @@ main {
 
 /* ── Page layout ── */
 .page {
-  min-height: 100vh;
+  min-height: 60vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: start;
@@ -1009,9 +1009,17 @@ a.contact-card-value:hover {
 
 /* ── Notes Carousel (Homepage) ── */
 .notes-carousel-section {
-  padding: 4rem 0 3rem;
+  padding: 3.5rem 0 3rem;
   border-top: 1px solid var(--color-border);
   overflow: hidden;
+}
+
+.notes-carousel-header {
+  padding: 0 3rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .notes-carousel-label {
@@ -1020,9 +1028,34 @@ a.contact-card-value:hover {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
+  color: var(--color-burgundy);
+}
+
+.notes-carousel-description {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--color-text-muted);
-  padding: 0 3rem;
-  margin-bottom: 2rem;
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+.notes-carousel-cta {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-burgundy);
+  padding-bottom: 1px;
+  align-self: flex-start;
+  transition: opacity 0.2s;
+}
+
+.notes-carousel-cta:hover {
+  opacity: 0.65;
 }
 
 .notes-carousel {
@@ -1181,7 +1214,7 @@ a.contact-card-value:hover {
     padding: 3rem 0 2rem;
   }
 
-  .notes-carousel-label {
+  .notes-carousel-header {
     padding: 0 1.5rem;
   }
 

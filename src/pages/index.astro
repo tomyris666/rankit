@@ -49,7 +49,11 @@ Digital marketing consultancy specialising in cutting-edge technologies.
   </div>
 
   <section class="notes-carousel-section">
-    <p class="notes-carousel-label">From the Notes</p>
+    <div class="notes-carousel-header">
+      <p class="notes-carousel-label">From the Notes</p>
+      <p class="notes-carousel-description">Practical guides, sharp observations, and field notes from the team — published openly, no gatekeeping.</p>
+      <a href="/notes/" class="notes-carousel-cta">Read More</a>
+    </div>
     <div class="notes-carousel" id="notes-carousel">
       {allArticles.map(({ article, path, categoryPath }) => (
         <a href={path} class="carousel-card">
