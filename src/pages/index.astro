@@ -50,10 +50,16 @@ Digital marketing consultancy specialising in cutting-edge technologies.
 
   <section class="notes-carousel-section">
     <div class="notes-carousel-header">
-      <p class="notes-carousel-label">From the Notes</p>
-      <p class="notes-carousel-description">Practical guides, sharp observations, and field notes from the team — published openly, no gatekeeping.</p>
-      <a href="/notes/" class="notes-carousel-cta">Read More</a>
+      <div class="notes-carousel-header-left">
+        <p class="notes-carousel-label">From the Notes</p>
+        <p class="notes-carousel-description">Practical guides, sharp observations, and field notes from the team — published openly, no gatekeeping.</p>
+      </div>
+      <div class="carousel-controls" aria-label="Carousel navigation">
+        <button class="carousel-btn" id="carousel-prev" aria-label="Previous">←</button>
+        <button class="carousel-btn" id="carousel-next" aria-label="Next">→</button>
+      </div>
     </div>
+
     <div class="notes-carousel" id="notes-carousel">
       {allArticles.map(({ article, path, categoryPath }) => (
         <a href={path} class="carousel-card">
@@ -66,6 +72,10 @@ Digital marketing consultancy specialising in cutting-edge technologies.
           <p class="carousel-card-summary">{article.summary}</p>
         </a>
       ))}
+    </div>
+
+    <div class="carousel-cta-wrapper">
+      <a href="/notes/" class="contact-line">Read More</a>
     </div>
   </section>
 
@@ -122,7 +132,20 @@ Digital marketing consultancy specialising in cutting-edge technologies.
         carousel.scrollLeft = startScrollLeft - (e.clientX - startX);
       });
 
-      // Initial render + settle after paint
+      // Prev / Next buttons
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const cardWidth = (cards[0]?.offsetWidth || 240) + 28; // card + gap (1.75rem ≈ 28px)
+
+      prevBtn?.addEventListener('click', () => {
+        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      });
+
+      // Initial render
       update();
       requestAnimationFrame(() => requestAnimationFrame(update));
     }
