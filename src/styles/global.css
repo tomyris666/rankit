@@ -271,11 +271,116 @@ main {
   background-color: var(--color-black);
 }
 
-/* ── Contact Options ── */
-.contact-options {
+/* ── Contact line as button ── */
+.contact-line-btn {
+  border: none;
+  cursor: pointer;
+}
+
+/* ── Contact Modal ── */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
   display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 17, 17, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.contact-modal-overlay.contact-modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.contact-modal-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 2.5rem 2rem;
+  max-width: 340px;
+  width: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  transform: scale(0.96) translateY(10px);
+  transition: transform 0.22s ease;
+}
+
+.contact-modal-overlay.contact-modal-open .contact-modal-glass {
+  transform: scale(1) translateY(0);
+}
+
+.contact-modal-title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+}
+
+.contact-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-modal-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--color-border);
+  letter-spacing: 0.05em;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+
+.contact-modal-option:hover {
+  border-color: var(--color-burgundy);
+  color: var(--color-burgundy);
+  background: rgba(114, 47, 55, 0.04);
+}
+
+.contact-modal-arrow {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition: opacity 0.18s, transform 0.18s;
+}
+
+.contact-modal-option:hover .contact-modal-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  padding: 0.3rem 0.5rem;
+  transition: color 0.18s;
+}
+
+.contact-modal-close:hover {
+  color: var(--color-text);
 }
 
 /* ── Footer ── */
@@ -691,7 +796,7 @@ a.contact-card-value:hover {
   min-height: calc(100vh - var(--nav-height));
 }
 
-.notes-welcome .headline {
+.notes-welcome {
   margin-bottom: 1.5rem;
 }
 
@@ -902,6 +1007,87 @@ a.contact-card-value:hover {
   clear: both;
 }
 
+/* ── Notes Carousel (Homepage) ── */
+.notes-carousel-section {
+  padding: 4rem 0 3rem;
+  border-top: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.notes-carousel-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  padding: 0 3rem;
+  margin-bottom: 2rem;
+}
+
+.notes-carousel {
+  display: flex;
+  gap: 1.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1.5rem 4rem 2.5rem;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.notes-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  scroll-snap-align: center;
+  flex: 0 0 240px;
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  text-decoration: none;
+  display: block;
+  will-change: transform, opacity;
+  transition: border-color 0.2s;
+}
+
+.carousel-card:hover {
+  border-color: var(--color-burgundy);
+}
+
+.carousel-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.carousel-card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 0.1em 0.45em;
+}
+
+.carousel-card-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-black);
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+
+.carousel-card-summary {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   :root {
@@ -988,6 +1174,24 @@ a.contact-card-value:hover {
 
   .contact-card-label {
     min-width: unset;
+  }
+
+  /* Carousel mobile */
+  .notes-carousel-section {
+    padding: 3rem 0 2rem;
+  }
+
+  .notes-carousel-label {
+    padding: 0 1.5rem;
+  }
+
+  .notes-carousel {
+    padding: 1rem 1.5rem 2rem;
+    gap: 1rem;
+  }
+
+  .carousel-card {
+    flex: 0 0 200px;
   }
 
   /* Notes page mobile — sticky bottom sheet */

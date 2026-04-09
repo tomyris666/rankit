@@ -40,18 +40,7 @@ const schema = {
                     {sub.articles?.map((article) => {
                       const articlePath = `/${sub.slug}/${article.slug}/`;
                       return (
-                        <a
-                          class="tree-article-link"
-                          href={articlePath}
-                          data-slug={article.slug}
-                          data-category={sub.slug}
-                          data-category-name={sub.name}
-                          data-parent-name={cat.name}
-                          data-tags={`${cat.name} ${sub.name}`}
-                          data-title={article.title}
-                          data-summary={article.summary}
-                          data-path={articlePath}
-                        >
+                        <a class="tree-article-link" href={articlePath} data-slug={article.slug}>
                           {article.title}
                         </a>
                       );
@@ -66,6 +55,10 @@ const schema = {
     </aside>
 
     <section class="notes-content" id="notes-content">
+      <div class="notes-welcome" id="notes-welcome">
+        <p class="description scribble-target">A growing knowledge base of practical guides, checklists, and deep dives across digital marketing, SEO, analytics, and content strategy.</p>
+      </div>
+
       <div class="notes-search-wrapper">
         <input
           type="search"
@@ -76,419 +69,80 @@ const schema = {
           spellcheck="false"
         />
       </div>
-      <div id="search-results" class="search-results" hidden></div>
-      <div class="notes-welcome" id="notes-welcome">
-        <h1 class="headline scribble-target">Notes</h1>
-        <p class="description scribble-target">A growing knowledge base of practical guides, checklists, and deep dives across digital marketing, SEO, analytics, and content strategy.</p>
-        <p class="description" style="font-size: 0.7rem; color: var(--color-text-muted);">
-          ← Browse the tree to explore topics, or click an article to preview it here.
-        </p>
-      </div>
-      <div class="preview-card" id="preview-card" style="display: none;" aria-live="polite">
-        <div class="preview-illustration" aria-hidden="true">
-          <canvas id="preview-shape-canvas" class="preview-shape-canvas" width="400" height="320"></canvas>
-        </div>
-        <h2 class="preview-title"></h2>
-        <p class="preview-summary"></p>
-        <a class="preview-read-more contact-line" href="#">Read more →</a>
+
+      <div id="notes-all-cards" class="search-results">
+        {allArticles.map(({ article, path, categoryPath }) => {
+          const parentName = categoryPath[0] || '';
+          const leafName = categoryPath[categoryPath.length - 1] || '';
+          return (
+            <a
+              href={path}
+              class="search-result-card"
+              data-title={article.title}
+              data-tags={categoryPath.join(' ').toLowerCase()}
+            >
+              <div class="search-result-meta">
+                <span class="search-result-tag">{parentName}</span>
+                {leafName !== parentName && <span class="search-result-tag">{leafName}</span>}
+              </div>
+              <p class="search-result-title">{article.title}</p>
+              <p class="search-result-summary">{article.summary}</p>
+            </a>
+          );
+        })}
       </div>
     </section>
   </div>
 
   <script>
-    let notesTreeAbort: AbortController | null = null;
+    let notesAbort: AbortController | null = null;
 
-    function initNotesTree() {
+    function initNotes() {
+      notesAbort?.abort();
+      notesAbort = new AbortController();
+      const { signal } = notesAbort;
+
       const sidebar = document.getElementById('tree-sidebar');
       const mobileToggle = document.getElementById('tree-mobile-toggle');
-      const treeNav = document.getElementById('tree-nav');
-      const previewCard = document.getElementById('preview-card') as HTMLElement | null;
-      const welcome = document.getElementById('notes-welcome') as HTMLElement | null;
 
-      if (!sidebar || !treeNav) return;
-
-      // Cancel any listeners from a previous visit to this page
-      notesTreeAbort?.abort();
-      notesTreeAbort = new AbortController();
-      const { signal } = notesTreeAbort;
-
-      // Mobile toggle
+      // Mobile sidebar toggle
       mobileToggle?.addEventListener('click', () => {
         const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
         mobileToggle.setAttribute('aria-expanded', String(!expanded));
-        sidebar.classList.toggle('tree-sidebar-open');
+        sidebar?.classList.toggle('tree-sidebar-open');
         const icon = mobileToggle.querySelector('.tree-mobile-toggle-icon');
         if (icon) icon.textContent = expanded ? '▶' : '▼';
       }, { signal });
 
       // Tree expand/collapse
-      sidebar.querySelectorAll('.tree-toggle').forEach((btn) => {
+      document.querySelectorAll('#tree-nav .tree-toggle').forEach((btn) => {
         btn.addEventListener('click', () => {
           const expanded = btn.getAttribute('aria-expanded') === 'true';
           btn.setAttribute('aria-expanded', String(!expanded));
           const children = btn.nextElementSibling as HTMLElement | null;
           if (children) {
             children.setAttribute('aria-hidden', String(expanded));
-            if (!expanded) {
-              children.classList.add('tree-children-open');
-            } else {
-              children.classList.remove('tree-children-open');
-            }
+            children.classList.toggle('tree-children-open', !expanded);
           }
         }, { signal });
       });
 
-      // ── 3D wireframe shape renderer ──
-      const shapeCanvas = document.getElementById('preview-shape-canvas') as HTMLCanvasElement | null;
-      let shapeAnimId: number | null = null;
-      let currentShape = '';
-
-      // Category → shape mapping
-      const shapeMap: Record<string, string> = {
-        'seo': 'pyramid',
-        'content-strategy': 'octahedron',
-        'analytics': 'cube',
-        'ai-general': 'filling',
-        'prompt-engineering': 'bowling',
-      };
-
-      // 3D geometry definitions (unit-scale vertices + edge pairs)
-      type Vec3 = [number, number, number];
-      const shapes: Record<string, { verts: Vec3[]; edges: [number, number][] }> = {
-        pyramid: {
-          verts: [[0, -1, 0], [-1, 1, -1], [1, 1, -1], [1, 1, 1], [-1, 1, 1]],
-          edges: [[0,1],[0,2],[0,3],[0,4],[1,2],[2,3],[3,4],[4,1]],
-        },
-        octahedron: {
-          verts: [[0,-1,0],[0,1,0],[-1,0,0],[1,0,0],[0,0,-1],[0,0,1]],
-          edges: [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[4,3],[3,5],[5,2]],
-        },
-        cube: {
-          verts: [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],
-          edges: [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]],
-        },
-      };
-
-      function startShape(name: string) {
-        if (shapeAnimId !== null) cancelAnimationFrame(shapeAnimId);
-        if (!shapeCanvas) return;
-        const ctx = shapeCanvas.getContext('2d');
-        if (!ctx) return;
-
-        const dpr = window.devicePixelRatio || 1;
-        const w = shapeCanvas.clientWidth;
-        const h = shapeCanvas.clientHeight;
-        if (w === 0 || h === 0) return; // not visible yet
-        shapeCanvas.width = w * dpr;
-        shapeCanvas.height = h * dpr;
-        ctx.scale(dpr, dpr);
-
-        // ── Filling balls animation ──
-        if (name === 'filling') {
-          let t = 0;
-          const STAGGER = 10;
-          const PAUSE = 100;
-
-          function fillingFrame() {
-            ctx!.clearRect(0, 0, w, h);
-
-            const radius = h * 0.13;
-            const spacing = radius * 2.6;
-            const cols = Math.floor(w / spacing);
-            const rows = Math.floor(h / spacing);
-            const total = cols * rows;
-            const offsetX = (w - cols * spacing) / 2 + radius;
-            const offsetY = (h - rows * spacing) / 2 + radius;
-
-            const toShow = Math.min(Math.floor(t / STAGGER), total);
-
-            for (let i = 0; i < toShow; i++) {
-              const col = i % cols;
-              const row = Math.floor(i / cols);
-              const x = offsetX + col * spacing;
-              const y = offsetY + row * spacing;
-              const isBlue = i === total - 1;
-
-              ctx!.globalAlpha = 0.9;
-              ctx!.fillStyle = isBlue ? '#3b82f6' : '#722f37';
-              ctx!.beginPath();
-              ctx!.arc(x, y, radius, 0, Math.PI * 2);
-              ctx!.fill();
-
-              ctx!.globalAlpha = 0.2;
-              ctx!.fillStyle = '#ffffff';
-              ctx!.beginPath();
-              ctx!.arc(x - radius * 0.28, y - radius * 0.28, radius * 0.4, 0, Math.PI * 2);
-              ctx!.fill();
-            }
-
-            ctx!.globalAlpha = 1;
-            t++;
-            if (t > total * STAGGER + PAUSE) t = 0;
-
-            shapeAnimId = requestAnimationFrame(fillingFrame);
-          }
-
-          shapeAnimId = requestAnimationFrame(fillingFrame);
-          return;
-        }
-
-        // ── Bowling lane animation ──
-        if (name === 'bowling') {
-          let ballX = -40;
-          let laneProgress = 0;
-          const LANE_CYCLE = 420;
-          const BALL_SPEED = 1.4;
-
-          function bowlingFrame() {
-            ctx!.clearRect(0, 0, w, h);
-            const cy = h / 2;
-            const maxGap = h * 0.38;
-            const minGap = h * 0.04;
-            const gap = maxGap + (minGap - maxGap) * laneProgress;
-
-            ctx!.strokeStyle = '#722f37';
-            ctx!.lineWidth = 1.5;
-            ctx!.globalAlpha = 0.75;
-            ctx!.beginPath(); ctx!.moveTo(0, cy - gap); ctx!.lineTo(w, cy - gap); ctx!.stroke();
-            ctx!.beginPath(); ctx!.moveTo(0, cy + gap); ctx!.lineTo(w, cy + gap); ctx!.stroke();
-
-            const radius = Math.max(gap * 0.72, 3);
-            ctx!.globalAlpha = 0.9;
-            ctx!.fillStyle = '#722f37';
-            ctx!.beginPath();
-            ctx!.arc(ballX, cy, radius, 0, Math.PI * 2);
-            ctx!.fill();
-
-            ctx!.globalAlpha = 0.2;
-            ctx!.fillStyle = '#ffffff';
-            ctx!.beginPath();
-            ctx!.arc(ballX - radius * 0.28, cy - radius * 0.28, radius * 0.4, 0, Math.PI * 2);
-            ctx!.fill();
-
-            ctx!.globalAlpha = 1;
-
-            ballX += BALL_SPEED;
-            laneProgress += 1 / LANE_CYCLE;
-            if (ballX > w + radius) { ballX = -radius; laneProgress = 0; }
-
-            shapeAnimId = requestAnimationFrame(bowlingFrame);
-          }
-
-          shapeAnimId = requestAnimationFrame(bowlingFrame);
-          return;
-        }
-
-        const shape = shapes[name];
-        if (!shape) return;
-
-        const cx = w / 2;
-        const cy = h / 2;
-        const scale = Math.min(w, h) * 0.28;
-        let angle = 0;
-
-        function project(v: Vec3, a: number): [number, number] {
-          // rotate around Y then tilt slightly on X
-          const cosA = Math.cos(a), sinA = Math.sin(a);
-          const x1 = v[0] * cosA - v[2] * sinA;
-          const z1 = v[0] * sinA + v[2] * cosA;
-          const tilt = 0.35;
-          const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
-          const y1 = v[1] * cosT - z1 * sinT;
-          const z2 = v[1] * sinT + z1 * cosT;
-          // simple perspective
-          const d = 4 + z2 * 0.5;
-          return [cx + (x1 / d) * scale * 3, cy + (y1 / d) * scale * 3];
-        }
-
-        function frame() {
-          ctx!.clearRect(0, 0, w, h);
-          angle += 0.008;
-
-          const projected = shape.verts.map(v => project(v, angle));
-
-          // draw edges
-          ctx!.strokeStyle = '#722f37';
-          ctx!.lineWidth = 1.5;
-          ctx!.globalAlpha = 0.35;
-          for (const [a, b] of shape.edges) {
-            ctx!.beginPath();
-            ctx!.moveTo(projected[a][0], projected[a][1]);
-            ctx!.lineTo(projected[b][0], projected[b][1]);
-            ctx!.stroke();
-          }
-
-          // draw vertices
-          ctx!.globalAlpha = 0.5;
-          ctx!.fillStyle = '#722f37';
-          for (const [px, py] of projected) {
-            ctx!.beginPath();
-            ctx!.arc(px, py, 2.5, 0, Math.PI * 2);
-            ctx!.fill();
-          }
-
-          ctx!.globalAlpha = 1;
-          shapeAnimId = requestAnimationFrame(frame);
-        }
-
-        shapeAnimId = requestAnimationFrame(frame);
-      }
-
-      function stopShape() {
-        if (shapeAnimId !== null) { cancelAnimationFrame(shapeAnimId); shapeAnimId = null; }
-      }
-
-      function showIllustration(category: string) {
-        const name = shapeMap[category] || 'cube';
-        stopShape();
-        currentShape = name;
-        requestAnimationFrame(() => startShape(name));
-      }
-
-      // Article link click → show preview
-      sidebar.querySelectorAll('.tree-article-link').forEach((link) => {
-        link.addEventListener('click', (e) => {
-          // Only prevent default for preview on index page
-          if (!previewCard) return;
-          e.preventDefault();
-
-          const anchor = link as HTMLElement;
-          const title = anchor.dataset.title || '';
-          const summary = anchor.dataset.summary || '';
-          const path = anchor.dataset.path || '#';
-          const category = anchor.dataset.category || '';
-
-          // Mark active
-          sidebar.querySelectorAll('.tree-article-link').forEach((l) => l.classList.remove('tree-article-active'));
-          anchor.classList.add('tree-article-active');
-
-          // Flash effect
-          anchor.classList.add('tree-article-flash');
-          setTimeout(() => anchor.classList.remove('tree-article-flash'), 150);
-
-          // Hide welcome, show preview
-          if (welcome) welcome.style.display = 'none';
-
-          // Animate preview
-          previewCard.classList.remove('preview-card-enter');
-          previewCard.style.display = 'none';
-
-          requestAnimationFrame(() => {
-            const titleEl = previewCard.querySelector('.preview-title');
-            const summaryEl = previewCard.querySelector('.preview-summary');
-            const readMore = previewCard.querySelector('.preview-read-more') as HTMLAnchorElement | null;
-
-            if (titleEl) titleEl.textContent = title;
-            if (summaryEl) summaryEl.textContent = summary;
-            if (readMore) readMore.href = path;
-
-            previewCard.style.display = '';
-            showIllustration(category);
-
-            requestAnimationFrame(() => {
-              previewCard.classList.add('preview-card-enter');
-            });
-          });
-        }, { signal });
-      });
-
-      // ── Search ──
+      // Search — filter static cards
       const searchInput = document.getElementById('notes-search') as HTMLInputElement | null;
-      const searchResults = document.getElementById('search-results') as HTMLElement | null;
+      const allCards = Array.from(
+        document.querySelectorAll('#notes-all-cards .search-result-card')
+      ) as HTMLElement[];
 
-      if (searchInput && searchResults) {
-        // Collect all article data from the DOM (includes tags set server-side)
-        const allLinks = Array.from(sidebar.querySelectorAll('.tree-article-link')) as HTMLElement[];
-
-        searchInput.addEventListener('input', () => {
-          const q = searchInput.value.trim().toLowerCase();
-
-          if (!q) {
-            searchResults.hidden = true;
-            searchResults.innerHTML = '';
-            if (welcome) welcome.style.display = '';
-            return;
-          }
-
-          const matches = allLinks.filter((el) => {
-            const title = (el.dataset.title || '').toLowerCase();
-            const tags = (el.dataset.tags || '').toLowerCase();
-            return title.includes(q) || tags.includes(q);
-          });
-
-          if (welcome) welcome.style.display = 'none';
-          if (previewCard) previewCard.style.display = 'none';
-
-          if (matches.length === 0) {
-            searchResults.innerHTML = '<p class="search-no-results">No articles found.</p>';
-            searchResults.hidden = false;
-            return;
-          }
-
-          searchResults.innerHTML = matches.map((el) => {
-            const title = el.dataset.title || '';
-            const summary = el.dataset.summary || '';
-            const path = el.dataset.path || '#';
-            const categoryName = el.dataset.categoryName || '';
-            const parentName = el.dataset.parentName || '';
-            return `
-              <a href="${path}" class="search-result-card">
-                <div class="search-result-meta">
-                  <span class="search-result-tag">${parentName}</span>
-                  <span class="search-result-tag">${categoryName}</span>
-                </div>
-                <p class="search-result-title">${title}</p>
-                <p class="search-result-summary">${summary}</p>
-              </a>`;
-          }).join('');
-
-          searchResults.hidden = false;
-        }, { signal });
-      }
-
-      // Keyboard navigation
-      const focusableItems = () => {
-        const items: HTMLElement[] = [];
-        sidebar.querySelectorAll('.tree-toggle, .tree-children-open > .tree-article-link, .tree-children-open > .tree-branch').forEach((el) => {
-          // For nested branches, get the toggle
-          if (el.classList.contains('tree-branch')) {
-            const toggle = el.querySelector(':scope > .tree-toggle') as HTMLElement | null;
-            if (toggle) items.push(toggle);
-          } else {
-            items.push(el as HTMLElement);
-          }
+      searchInput?.addEventListener('input', () => {
+        const q = searchInput.value.trim().toLowerCase();
+        allCards.forEach((card) => {
+          const title = (card.dataset.title || '').toLowerCase();
+          const tags = (card.dataset.tags || '').toLowerCase();
+          card.hidden = !!q && !title.includes(q) && !tags.includes(q);
         });
-        return items;
-      };
-
-      treeNav.addEventListener('keydown', (e: KeyboardEvent) => {
-        const target = e.target as HTMLElement;
-        const items = focusableItems();
-        const idx = items.indexOf(target);
-        if (idx === -1) return;
-
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          if (idx < items.length - 1) items[idx + 1].focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          if (idx > 0) items[idx - 1].focus();
-        } else if (e.key === 'ArrowRight' && target.classList.contains('tree-toggle')) {
-          e.preventDefault();
-          if (target.getAttribute('aria-expanded') !== 'true') {
-            (target as HTMLButtonElement).click();
-          }
-        } else if (e.key === 'ArrowLeft' && target.classList.contains('tree-toggle')) {
-          e.preventDefault();
-          if (target.getAttribute('aria-expanded') === 'true') {
-            (target as HTMLButtonElement).click();
-          }
-        } else if (e.key === 'Enter' && target.classList.contains('tree-article-link')) {
-          (target as HTMLAnchorElement).click();
-        }
       }, { signal });
     }
 
-    document.addEventListener('astro:page-load', initNotesTree);
+    document.addEventListener('astro:page-load', initNotes);
   </script>
 </BaseLayout>

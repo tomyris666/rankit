@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllArticles } from '../data/notes-tree';
+
+const allArticles = getAllArticles();
 
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -44,5 +47,82 @@ Digital marketing consultancy specialising in cutting-edge technologies.
       </video>
     </div>
   </div>
-</BaseLayout>
 
+  <section class="notes-carousel-section">
+    <p class="notes-carousel-label">From the Notes</p>
+    <div class="notes-carousel" id="notes-carousel">
+      {allArticles.map(({ article, path, categoryPath }) => (
+        <a href={path} class="carousel-card">
+          <div class="carousel-card-meta">
+            {categoryPath.map((part) => (
+              <span class="carousel-card-tag">{part}</span>
+            ))}
+          </div>
+          <p class="carousel-card-title">{article.title}</p>
+          <p class="carousel-card-summary">{article.summary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    function initCarousel() {
+      const carousel = document.getElementById('notes-carousel') as HTMLElement | null;
+      if (!carousel) return;
+
+      const cards = Array.from(carousel.querySelectorAll('.carousel-card')) as HTMLElement[];
+
+      function update() {
+        const cr = carousel.getBoundingClientRect();
+        const centerX = cr.left + cr.width / 2;
+
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenter = rect.left + rect.width / 2;
+          const dist = cardCenter - centerX;
+          const maxDist = cr.width * 0.55;
+          const t = Math.max(-1, Math.min(1, dist / maxDist));
+
+          const rotY = t * 38;
+          const scale = 1 - Math.abs(t) * 0.2;
+          const opacity = 1 - Math.abs(t) * 0.55;
+
+          card.style.transform = `perspective(900px) rotateY(${rotY}deg) scale(${scale})`;
+          card.style.opacity = String(Math.max(0.35, opacity));
+        });
+      }
+
+      carousel.addEventListener('scroll', update, { passive: true });
+
+      // Mouse drag
+      let dragging = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+
+      carousel.addEventListener('mousedown', (e) => {
+        dragging = true;
+        startX = e.clientX;
+        startScrollLeft = carousel.scrollLeft;
+        carousel.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!dragging) return;
+        dragging = false;
+        carousel.style.cursor = 'grab';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        carousel.scrollLeft = startScrollLeft - (e.clientX - startX);
+      });
+
+      // Initial render + settle after paint
+      update();
+      requestAnimationFrame(() => requestAnimationFrame(update));
+    }
+
+    document.addEventListener('astro:page-load', initCarousel);
+  </script>
+</BaseLayout>
