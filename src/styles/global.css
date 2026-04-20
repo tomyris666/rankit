@@ -3,14 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-bg: #ffffff;
+  --color-bg: #0a0a0a;
   --color-white: #ffffff;
-  --color-black: #111111;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b6b6b;
-  --color-text-body: #2e2e2e;
-  --color-burgundy: #722f37;
-  --color-border: rgba(0, 0, 0, 0.08);
+  --color-black: #f0f0f0;
+  --color-text: #e0e0e0;
+  --color-text-muted: #888888;
+  --color-text-body: #c8c8c8;
+  --color-burgundy: #a03a45;
+  --color-border: rgba(255, 255, 255, 0.09);
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --max-width: 900px;
   --nav-height: 64px;
@@ -68,7 +68,7 @@ main {
 }
 
 .nav-scrolled {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(10, 10, 10, 0.92);
   backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 var(--color-border);
 }
@@ -301,10 +301,10 @@ main {
 }
 
 .contact-modal-glass {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(18, 18, 18, 0.95);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2.5rem 2.5rem 2rem;
   max-width: 340px;
   width: 90%;
@@ -637,7 +637,7 @@ a.contact-card-value:hover {
   height: 140px;
   object-fit: cover;
   display: block;
-  background: #f2f1ef;
+  background: #1a1a1a;
 }
 
 .search-result-card-body {
@@ -1185,7 +1185,7 @@ a.contact-card-value:hover {
   height: 120px;
   object-fit: cover;
   display: block;
-  background: #f2f1ef;
+  background: #1a1a1a;
 }
 
 .carousel-card-body {
@@ -1443,7 +1443,7 @@ a.contact-card-value:hover {
     overflow: hidden;
     border-right: none;
     border-top: 1px solid var(--color-border);
-    background: #ffffff;
+    background: var(--color-bg);
     padding: 0;
     transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.07);
@@ -1472,7 +1472,7 @@ a.contact-card-value:hover {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #ffffff;
+    background: var(--color-bg);
     border-bottom: 1px solid transparent;
   }
 
@@ -1505,7 +1505,7 @@ a.contact-card-value:hover {
     max-height: 3.25rem;
     overflow: hidden;
     border-top: 1px solid var(--color-border);
-    background: #ffffff;
+    background: var(--color-bg);
     padding: 0;
     transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.07);
@@ -1520,7 +1520,7 @@ a.contact-card-value:hover {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #ffffff;
+    background: var(--color-bg);
     border-bottom: 1px solid transparent;
   }
 
@@ -1552,7 +1552,7 @@ a.contact-card-value:hover {
     max-height: 3.25rem;
     overflow: hidden;
     border-top: 1px solid var(--color-border);
-    background: #ffffff;
+    background: var(--color-bg);
     transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.07);
   }
@@ -1566,7 +1566,7 @@ a.contact-card-value:hover {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #ffffff;
+    background: var(--color-bg);
     border-bottom: 1px solid transparent;
   }
 
