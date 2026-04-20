@@ -17,9 +17,16 @@ const schema = {
   schema={schema}
 >
 
-  <img src="/images/slopocalypse/spider_slop.png" alt="The Slopocalypse" class="feature-img" />
+  <!-- Feature image: breaks out of column, fades into content -->
+  <div class="feature-img-wrapper">
+    <img src="/images/slopocalypse/spider_slop.png" alt="The Slopocalypse" class="feature-img" />
+    <div class="feature-img-fade"></div>
+  </div>
 
-  <p class="description scribble-target">AI Slop is not new. It is an ongoing degradation of the internet, one that predates large language models by decades. I will argue that fake content is not inherently bad content, however, meaningless content is.</p>
+  <!-- Opening paragraph styled as pull quote -->
+  <blockquote class="note-pullquote opening-quote">
+    AI Slop is not new. It is an ongoing degradation of the internet, one that predates large language models by decades. I will argue that fake content is not inherently bad content, however, meaningless content is.
+  </blockquote>
 
   <p class="note-text">The first content spinner, Articlebot, launched in 2005. Its creator claimed it was built to protect free speech from search engine censorship. It was used overwhelmingly as a black hat SEO tool — churning out thousands of near-identical pages in hopes that a few would rank. This practice of algorithmically generated content has been evolving for twenty years.</p>
 
@@ -47,22 +54,18 @@ const schema = {
 
   <p class="note-text">At a glance, two pieces of content can have exactly the same output. Consider a video of a ballerina performing an eight-turn pirouette, indistinguishable from an AI-generated one. For most, simply the knowledge that it is artificial degrades the enjoyment.  This is because the pirouette is not the point in itself. The meaning of such a turn is the human condition in pursuit of perfection. The blood, sweat and tears that culminated in the gravity-defying act of the dance. It is the meaning behind the spin from which pleasure is derived.</p>
 
-  <a
-    href="https://www.instagram.com/reel/DVZW0hnATEz/?igsh=M25lZHA2aHd6OWNx"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="instagram-embed"
-    aria-label="View Instagram Reel"
-  >
-    <span class="ig-icon">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-    </span>
-    <span class="ig-text">
-      <span class="ig-label">Instagram Reel</span>
-      <span class="ig-url">instagram.com/reel/DVZW0hnATEz</span>
-    </span>
-    <span class="ig-arrow">→</span>
-  </a>
+  <!-- Instagram Reel embed -->
+  <div class="ig-embed-wrapper">
+    <blockquote
+      class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/reel/DVZW0hnATEz/?igsh=M25lZHA2aHd6OWNx"
+      data-instgrm-version="14"
+      style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:0; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"
+    >
+      <a href="https://www.instagram.com/reel/DVZW0hnATEz/?igsh=M25lZHA2aHd6OWNx" target="_blank" rel="noopener noreferrer">View reel on Instagram</a>
+    </blockquote>
+    <script async src="//www.instagram.com/embed.js"></script>
+  </div>
 
   <p class="note-text">The revulsion is not proof that AI content fails. In this context, it has simply failed to capture the point.</p>
 
@@ -85,17 +88,70 @@ const schema = {
 </NoteLayout>
 
 <style>
-  /* ── Feature image ── */
-  .feature-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  /* ── Feature image: bleeds out of column, fades into content ── */
+  .feature-img-wrapper {
+    position: relative;
+    margin: -1rem -2.5rem 0;
+    overflow: hidden;
+    /* show middle 60% — crops 20% top + 20% bottom */
+    aspect-ratio: 5 / 3;
+    border-radius: 4px 4px 0 0;
   }
 
-  /* ── Images ── */
+  .feature-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  /* gradient fade from image into page background */
+  .feature-img-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+    pointer-events: none;
+  }
+
+  /* ── Consistent paragraph spacing ── */
+  .note-text {
+    margin-bottom: 1.4rem;
+    line-height: 1.75;
+  }
+
+  /* ── Pull quote (shared between opening and "Origin is irrelevant") ── */
+  .note-pullquote {
+    border-left: 3px solid var(--accent, #722f37);
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: #444;
+    background: color-mix(in srgb, var(--accent, #722f37) 6%, transparent);
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* Opening quote sits directly under the faded image */
+  .opening-quote {
+    margin-top: 0;
+    border-radius: 0 0 6px 6px;
+    border-top: none;
+  }
+
+  /* ── Section divider ── */
+  .section-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+    margin: 2.5rem 0;
+  }
+
+  /* ── Inline figures ── */
   .article-figure {
     margin: 2rem 0;
   }
@@ -111,7 +167,7 @@ const schema = {
   .article-figure figcaption {
     margin-top: 0.5rem;
     font-size: 0.82rem;
-    color: var(--text-muted, #888);
+    color: #888;
     text-align: center;
     font-style: italic;
   }
@@ -122,81 +178,15 @@ const schema = {
     text-underline-offset: 2px;
   }
 
-  /* ── Section divider ── */
-  .section-rule {
-    border: none;
-    height: 1px;
-    background: linear-gradient(to right, transparent, #ddd, transparent);
-    margin: 2.5rem 0;
-  }
-
-  /* ── Pull quote ── */
-  .note-pullquote {
-    border-left: 3px solid var(--accent, #722f37);
-    margin: 2.5rem 0;
-    padding: 1rem 1.5rem;
-    font-style: italic;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: var(--text-muted, #444);
-    background: color-mix(in srgb, var(--accent, #722f37) 6%, transparent);
-    border-radius: 0 6px 6px 0;
-  }
-
-  /* ── Instagram embed card ── */
-  .instagram-embed {
+  /* ── Instagram embed ── */
+  .ig-embed-wrapper {
+    margin: 2rem 0;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    margin: 1.75rem 0;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background: #fafafa;
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    justify-content: center;
   }
 
-  .instagram-embed:hover {
-    background: #fff;
-    border-color: #c13584;
-    box-shadow: 0 2px 12px rgba(193,53,132,0.10);
-  }
-
-  .ig-icon {
-    color: #c13584;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .ig-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .ig-label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #111;
-  }
-
-  .ig-url {
-    font-size: 0.8rem;
-    color: #888;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .ig-arrow {
-    color: #c13584;
-    font-size: 1.1rem;
-    flex-shrink: 0;
+  .ig-embed-wrapper .instagram-media {
+    margin: 0 !important;
   }
 
   /* ── Closing kicker ── */
@@ -205,5 +195,13 @@ const schema = {
     font-size: 1.1rem;
     color: var(--accent, #722f37);
     margin-top: 2rem;
+    line-height: 1.75;
+  }
+
+  @media (max-width: 640px) {
+    .feature-img-wrapper {
+      margin-left: -1rem;
+      margin-right: -1rem;
+    }
   }
 </style>
