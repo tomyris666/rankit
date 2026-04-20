@@ -20,7 +20,6 @@ const schema = {
   <!-- Feature image: breaks out of column, fades into content -->
   <div class="feature-img-wrapper">
     <img src="/images/slopocalypse/spider_slop.png" alt="The Slopocalypse" class="feature-img" />
-    <div class="feature-img-fade"></div>
   </div>
 
   <!-- Opening paragraph styled as pull quote -->
@@ -104,17 +103,6 @@ const schema = {
     object-fit: cover;
     object-position: center center;
     display: block;
-  }
-
-  /* gradient fade from image into page background */
-  .feature-img-fade {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 55%;
-    background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
-    pointer-events: none;
   }
 
   /* ── Consistent paragraph spacing ── */
