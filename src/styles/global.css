@@ -1117,8 +1117,8 @@ a.contact-card-value:hover {
 }
 
 .carousel-btn:hover {
-  color: var(--color-black);
-  border-color: var(--color-black);
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
 }
 
 /* ── Read More below carousel ── */
@@ -1134,16 +1134,17 @@ a.contact-card-value:hover {
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-black);
-  border: 1px solid var(--color-black);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   text-decoration: none;
   padding: 0.55em 1.3em;
   display: inline-block;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .carousel-read-more:hover {
-  background: var(--color-black);
+  background: var(--color-burgundy);
+  border-color: var(--color-burgundy);
   color: var(--color-white);
 }
 
@@ -1283,8 +1284,8 @@ a.contact-card-value:hover {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-white);
-  background: var(--color-black);
-  border: 1px solid var(--color-black);
+  background: var(--color-burgundy);
+  border: 1px solid var(--color-burgundy);
   padding: 0.6em 1.1em;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -1292,8 +1293,8 @@ a.contact-card-value:hover {
 }
 
 .email-section-btn:hover {
-  background: var(--color-text-muted);
-  border-color: var(--color-text-muted);
+  background: #7a2a33;
+  border-color: #7a2a33;
 }
 
 .email-section-success {
