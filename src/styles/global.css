@@ -216,6 +216,7 @@ main {
   max-width: 520px;
   height: auto;
   opacity: 0.9;
+  filter: invert(1);
 }
 
 .headline {
@@ -265,12 +266,12 @@ main {
 }
 
 .contact-line:hover {
-  background-color: var(--color-black);
+  background-color: #1a0a0d;
   color: var(--color-white);
 }
 
 .contact-line:hover .scribble-vis {
-  background-color: var(--color-black);
+  background-color: #1a0a0d;
 }
 
 /* ── Contact line as button ── */
