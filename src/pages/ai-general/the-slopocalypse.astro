@@ -38,6 +38,11 @@ const schema = {
 
   <p class="note-text">Over the past 3 years, many clung to the notion that EEAT,  Google's framework for evaluating expertise, experience, authoritativeness, and trustworthiness, meant that organic content would take precedence. They were right that quality would win. They were wrong about what quality means. By the three metrics of cost, speed, and scale, AI is the definitive winner. Quality is where the debate is ongoing, and it is worth noting: the majority of AI-generated content is an order of magnitude superior to the spam that plagued the internet before it, and the SERP results show it.</p>
 
+  <aside class="author-aside">
+    <span class="author-aside-label">Author's note</span>
+    <p>Let's be clear: garbage content is not a side effect of AI — it is the dominant condition of the internet. <a href="https://ahrefs.com/blog/what-percentage-of-new-content-is-ai-generated/" target="_blank" rel="noopener noreferrer">Ahrefs' analysis of 900,000 new web pages</a> (April 2025) found that <strong>74.2% contained detectable AI-generated content</strong>. Google's March 2024 core update was designed to suppress what it estimated to be a 40% share of unhelpful content in search results. The floor of the internet has always been low. AI just lowered it further.</p>
+  </aside>
+
   <p class="note-text">Which is why the question "Can AI-generated content be superior to human-made content?" is itself the problem. It assumes origin is the relevant variable.</p>
 
   <hr class="section-rule" />
@@ -175,6 +180,49 @@ const schema = {
 
   .ig-embed-wrapper .instagram-media {
     margin: 0 !important;
+  }
+
+  /* ── Author aside (floats right beside content) ── */
+  .author-aside {
+    float: right;
+    clear: right;
+    width: 220px;
+    margin: 0.25rem 0 1.5rem 2rem;
+    padding: 1rem 1.1rem;
+    border-top: 2px solid var(--accent, #722f37);
+    background: color-mix(in srgb, var(--accent, #722f37) 5%, transparent);
+    border-radius: 0 0 6px 6px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .author-aside-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent, #722f37);
+    margin-bottom: 0.5rem;
+  }
+
+  .author-aside p {
+    margin: 0;
+  }
+
+  .author-aside a {
+    color: var(--accent, #722f37);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (max-width: 680px) {
+    .author-aside {
+      float: none;
+      width: auto;
+      margin: 1.5rem 0;
+    }
   }
 
   /* ── Closing kicker ── */
