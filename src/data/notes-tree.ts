@@ -102,9 +102,9 @@ export const notesTree: TreeCategory[] = [
         slug: 'ai-general',
         articles: [
           {
-            title: 'The Commodification of Content',
-            slug: 'the-commodification-of-content',
-            summary: 'When AI makes content infinitely cheap to produce, what happens to its value? An argument for why the lane is narrowing for generic content — and what survives.',
+            title: 'The Slopocalypse',
+            slug: 'the-slopocalypse',
+            summary: 'AI slop is not new — it predates LLMs by decades. The real problem was never origin. It was always meaning.',
             image: DEFAULT_IMAGE,
           },
           {
