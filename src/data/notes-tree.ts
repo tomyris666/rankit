@@ -105,7 +105,7 @@ export const notesTree: TreeCategory[] = [
             title: 'The Slopocalypse',
             slug: 'the-slopocalypse',
             summary: 'AI slop is not new — it predates LLMs by decades. The real problem was never origin. It was always meaning.',
-            image: DEFAULT_IMAGE,
+            image: '/images/slopocalypse/spider_slop.png',
           },
           {
             title: 'When to Trust the Model and When Not To',
