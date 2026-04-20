@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rankitconsultancy.com/sitemap-index.xml

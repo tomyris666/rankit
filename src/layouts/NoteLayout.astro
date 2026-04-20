@@ -1,0 +1,250 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { notesTree, getAllArticles } from '../data/notes-tree';
+
+interface Props {
+  title: string;
+  description: string;
+  articleSlug: string;
+  schema?: object | object[];
+}
+
+const { title, description, articleSlug, schema } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Find current article info for breadcrumb
+const allArticles = getAllArticles();
+const current = allArticles.find((a) => a.article.slug === articleSlug);
+const breadcrumbParts = current?.categoryPath || [];
+---
+<BaseLayout title={`${title} — Rankit Consultancy`} description={description} schema={schema}>
+  <div class="notes-page notes-page-article container">
+    <aside class="tree-sidebar tree-sidebar-desktop" id="tree-sidebar-desktop">
+      <nav class="tree-nav" aria-label="Notes navigation">
+        {notesTree.map((cat) => {
+          const catHasActive = current?.categoryPath[0] === cat.name;
+          return (
+            <div class="tree-branch" data-category={cat.slug}>
+              <button class="tree-toggle" aria-expanded="true" data-slug={cat.slug}>
+                <span class="tree-chevron">▶</span>
+                <span class="tree-toggle-label">{cat.name}</span>
+              </button>
+              <div class="tree-children tree-children-open" aria-hidden="false">
+                {cat.children?.map((sub) => {
+                  const subHasActive = catHasActive && current?.categoryPath[1] === sub.name;
+                  return (
+                    <div class="tree-branch tree-branch-nested" data-category={sub.slug}>
+                      <button class="tree-toggle tree-toggle-sub" aria-expanded={subHasActive ? 'true' : 'false'} data-slug={sub.slug}>
+                        <span class="tree-chevron">▶</span>
+                        <span class="tree-toggle-label">{sub.name}</span>
+                      </button>
+                      <div class={`tree-children tree-articles ${subHasActive ? 'tree-children-open' : ''}`} aria-hidden={subHasActive ? 'false' : 'true'}>
+                        {sub.articles?.map((article) => {
+                          const articlePath = `/${sub.slug}/${article.slug}/`;
+                          const isActive = article.slug === articleSlug;
+                          return (
+                            <a
+                              class={`tree-article-link ${isActive ? 'tree-article-active' : ''}`}
+                              href={articlePath}
+                              data-slug={article.slug}
+                            >
+                              {article.title}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </nav>
+    </aside>
+
+    <article class="note-content">
+      <nav class="note-breadcrumb" aria-label="Breadcrumb">
+        <a href="/notes/">Notes</a>
+        {breadcrumbParts.map((part) => (
+          <span class="note-breadcrumb-sep">/</span>
+          <span>{part}</span>
+        ))}
+      </nav>
+      <h1 class="headline scribble-target scribble-hidden">{title}</h1>
+      <div class="note-body">
+        <slot />
+      </div>
+      <div style="margin-top: 3rem;">
+        <a href="/notes/" class="contact-line" style="font-size: 0.65rem;">← Back to Notes</a>
+      </div>
+    </article>
+
+    <aside class="toc-sidebar" id="toc-sidebar" hidden>
+      <p class="toc-sidebar-label">On this page</p>
+      <nav id="toc-sidebar-nav" aria-label="On this page"></nav>
+    </aside>
+  </div>
+
+  <!-- Mobile TOC bottom sheet (stacks above Browse Notes, article pages only) -->
+  <div class="toc-bottom-mobile" id="toc-bottom-mobile">
+    <button class="tree-mobile-toggle" id="toc-bottom-toggle" aria-expanded="false">
+      <span class="tree-mobile-toggle-icon">▶</span> On this page
+    </button>
+    <nav id="toc-bottom-nav" class="toc-bottom-nav" aria-label="On this page"></nav>
+  </div>
+
+  <!-- Mobile bottom tree (sticky bottom sheet, visible only on mobile) -->
+  <div class="tree-bottom-mobile" id="tree-bottom-mobile">
+    <button class="tree-mobile-toggle" id="tree-bottom-toggle" aria-expanded="false" aria-controls="tree-bottom-mobile">
+      <span class="tree-mobile-toggle-icon">▶</span> Browse Notes
+    </button>
+    <nav class="tree-nav" aria-label="Notes navigation">
+      {notesTree.map((cat) => {
+        const catHasActive = current?.categoryPath[0] === cat.name;
+        return (
+          <div class="tree-branch" data-category={cat.slug}>
+            <button class="tree-toggle" aria-expanded="true" data-slug={cat.slug}>
+              <span class="tree-chevron">▶</span>
+              <span class="tree-toggle-label">{cat.name}</span>
+            </button>
+            <div class="tree-children tree-children-open" aria-hidden="false">
+              {cat.children?.map((sub) => {
+                const subHasActive = catHasActive && current?.categoryPath[1] === sub.name;
+                return (
+                  <div class="tree-branch tree-branch-nested" data-category={sub.slug}>
+                    <button class="tree-toggle tree-toggle-sub" aria-expanded={subHasActive ? 'true' : 'false'} data-slug={sub.slug}>
+                      <span class="tree-chevron">▶</span>
+                      <span class="tree-toggle-label">{sub.name}</span>
+                    </button>
+                    <div class={`tree-children tree-articles ${subHasActive ? 'tree-children-open' : ''}`} aria-hidden={subHasActive ? 'false' : 'true'}>
+                      {sub.articles?.map((article) => {
+                        const articlePath = `/${sub.slug}/${article.slug}/`;
+                        const isActive = article.slug === articleSlug;
+                        return (
+                          <a
+                            class={`tree-article-link ${isActive ? 'tree-article-active' : ''}`}
+                            href={articlePath}
+                            data-slug={article.slug}
+                          >
+                            {article.title}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </nav>
+  </div>
+
+  <script>
+    let noteTreeAbort: AbortController | null = null;
+
+    function initSectionNav() {
+      const sidebar = document.getElementById('toc-sidebar') as HTMLElement | null;
+      const sidebarNav = document.getElementById('toc-sidebar-nav');
+      const mobileSheet = document.getElementById('toc-bottom-mobile') as HTMLElement | null;
+      const mobileNav = document.getElementById('toc-bottom-nav');
+      const mobileToggle = document.getElementById('toc-bottom-toggle');
+      if (!sidebar || !sidebarNav || !mobileSheet || !mobileNav || !mobileToggle) return;
+
+      const headings = Array.from(document.querySelectorAll('.note-body h2.note-heading'));
+      if (headings.length === 0) { sidebar.hidden = true; return; }
+
+      // Assign IDs and build links in both desktop sidebar and mobile sheet
+      [sidebarNav, mobileNav].forEach((nav) => nav.innerHTML = '');
+      headings.forEach((h) => {
+        if (!h.id) {
+          h.id = h.textContent!.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        }
+        [sidebarNav, mobileNav].forEach((nav) => {
+          const a = document.createElement('a');
+          a.href = `#${h.id}`;
+          a.className = nav === sidebarNav ? 'toc-link' : 'tree-article-link';
+          a.textContent = h.textContent!.trim();
+          nav.appendChild(a);
+        });
+      });
+
+      sidebar.hidden = false;
+
+      // Mobile toggle
+      mobileToggle.addEventListener('click', () => {
+        const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+        mobileToggle.setAttribute('aria-expanded', String(!expanded));
+        mobileSheet.classList.toggle('toc-bottom-mobile-open');
+        const icon = mobileToggle.querySelector('.tree-mobile-toggle-icon');
+        if (icon) icon.textContent = expanded ? '▶' : '▼';
+      });
+
+      // Active highlight (desktop sidebar only)
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            sidebarNav.querySelectorAll('.toc-link').forEach((a) => a.classList.remove('toc-link-active'));
+            sidebarNav.querySelector(`a[href="#${e.target.id}"]`)?.classList.add('toc-link-active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+
+      headings.forEach((h) => io.observe(h));
+    }
+
+    function initNoteTree() {
+      // Only run on article pages, not on the notes index
+      if (!document.getElementById('tree-sidebar-desktop')) return;
+
+      noteTreeAbort?.abort();
+      noteTreeAbort = new AbortController();
+      const { signal } = noteTreeAbort;
+
+      // Attach expand/collapse to all tree toggles (both desktop sidebar and mobile bottom)
+      document.querySelectorAll('.tree-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          const children = btn.nextElementSibling as HTMLElement | null;
+          if (children) {
+            children.setAttribute('aria-hidden', String(expanded));
+            if (!expanded) {
+              children.classList.add('tree-children-open');
+            } else {
+              children.classList.remove('tree-children-open');
+            }
+          }
+        }, { signal });
+      });
+
+      // Mobile bottom sheet toggle
+      const bottomSheet = document.getElementById('tree-bottom-mobile') as HTMLElement | null;
+      const bottomToggle = document.getElementById('tree-bottom-toggle');
+      const tocSheet = document.getElementById('toc-bottom-mobile') as HTMLElement | null;
+
+      bottomToggle?.addEventListener('click', () => {
+        const expanded = bottomToggle.getAttribute('aria-expanded') === 'true';
+        bottomToggle.setAttribute('aria-expanded', String(!expanded));
+        bottomSheet?.classList.toggle('tree-bottom-mobile-open');
+        const icon = bottomToggle.querySelector('.tree-mobile-toggle-icon');
+        if (icon) icon.textContent = expanded ? '▶' : '▼';
+      }, { signal });
+
+      // Keep TOC sheet above Browse Notes as it animates
+      if (bottomSheet && tocSheet) {
+        const ro = new ResizeObserver(() => {
+          tocSheet.style.bottom = bottomSheet.offsetHeight + 'px';
+        });
+        ro.observe(bottomSheet);
+      }
+    }
+
+    document.addEventListener('astro:page-load', () => {
+      initSectionNav();
+      initNoteTree();
+    });
+  </script>
+</BaseLayout>

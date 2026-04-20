@@ -1,0 +1,53 @@
+---
+import NoteLayout from '../../layouts/NoteLayout.astro';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Chain-of-Thought vs Zero-Shot: A Practical Comparison',
+  description: 'A practical comparison of prompting strategies: when chain-of-thought reasoning adds value, and when it is just overhead.',
+  author: { '@type': 'Organization', name: 'Rankit Consultancy' },
+  datePublished: '2026-04-05',
+};
+---
+<NoteLayout
+  title="Chain-of-Thought vs Zero-Shot: A Practical Comparison"
+  description="A practical comparison of prompting strategies: when chain-of-thought reasoning adds value, and when it is just overhead."
+  articleSlug="chain-of-thought-vs-zero-shot"
+  schema={schema}
+>
+  <p class="description scribble-target">Not every task benefits from asking the model to reason step by step. Choosing the right prompting strategy is about matching the cognitive load of the task to the overhead of the technique.</p>
+
+  <h2 class="note-heading">Zero-Shot Prompting</h2>
+  <p class="note-text">Zero-shot prompting means giving the model a task description with no examples and no instruction to reason explicitly. The model draws directly on its training to produce an answer.</p>
+  <ul class="note-list">
+    <li>Best suited to well-defined, factual, or classification tasks where the model has strong prior knowledge: translation, summarisation, sentiment labelling, format conversion.</li>
+    <li>Fast and cheap — fewer tokens in the prompt, faster inference, lower cost at scale.</li>
+    <li>Fails on multi-step reasoning, ambiguous instructions, or tasks where the model needs to resolve competing constraints. Output quality degrades unpredictably.</li>
+    <li>A useful baseline. If zero-shot produces acceptable output 80% of the time, the cost of more elaborate techniques may not be justified.</li>
+  </ul>
+
+  <h2 class="note-heading">Chain-of-Thought Prompting</h2>
+  <p class="note-text">Chain-of-thought (CoT) prompting instructs the model to reason through a problem before producing a final answer. The simplest trigger is adding "Let's think step by step" or explicitly laying out a reasoning scaffold in the prompt.</p>
+  <ul class="note-list">
+    <li>Significantly improves performance on arithmetic, logical reasoning, multi-hop questions, and tasks that require integrating several pieces of information.</li>
+    <li>The reasoning trace is inspectable — errors in the chain of thought can be identified and corrected without black-box debugging.</li>
+    <li>Adds token overhead. For tasks running at high volume, the cost difference between zero-shot and CoT can be meaningful.</li>
+    <li>Can hallucinate with confidence — a well-structured but incorrect chain of thought is more persuasive than a simple wrong answer. Validate outputs on factual tasks.</li>
+  </ul>
+
+  <h2 class="note-heading">When to Use Each</h2>
+  <ul class="note-list">
+    <li><strong>Zero-shot</strong>: extraction, classification, formatting, translation, standard summarisation. Anything where the task is narrow and well-specified.</li>
+    <li><strong>CoT</strong>: planning tasks, multi-step analysis, decisions with trade-offs, math or logic that requires intermediate calculations.</li>
+    <li><strong>Few-shot CoT</strong>: when the task is novel and the model needs examples of correct reasoning to pattern-match against. Useful for domain-specific formats or non-standard output structures.</li>
+    <li>Test both before committing. Run twenty representative inputs through each strategy and compare output quality, error rate, and token cost.</li>
+  </ul>
+
+  <h2 class="note-heading">Practical Notes</h2>
+  <ul class="note-list">
+    <li>Newer frontier models (Claude 3.5+, GPT-4o, Gemini 1.5 Pro) have stronger zero-shot reasoning than models from two years ago. A task that required CoT in 2023 may not in 2026.</li>
+    <li>Structured output formats (JSON, XML) can sometimes replace explicit CoT by forcing the model to decompose a response into typed fields. Evaluate this as a lower-overhead alternative.</li>
+    <li>CoT works best when the prompt is unambiguous. If the task description has gaps, the model's reasoning will diverge unpredictably before it reaches a conclusion.</li>
+  </ul>
+</NoteLayout>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Rankit Consultancy",
+  "url": "https://rankitconsultancy.com/contact/",
+  "description": "Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+};
+---
+
+<BaseLayout
+  title="Contact — Rankit Consultancy"
+  description="Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+  schema={contactSchema}
+>
+
+  <div class="inner-page">
+    <div class="contact-card">
+      <div class="contact-card-row">
+        <span class="contact-card-label">Phone</span>
+        <a href="tel:+6012345678" class="contact-card-value">+6012-345678</a>
+      </div>
+      <div class="contact-card-row">
+        <span class="contact-card-label">Address</span>
+        <span class="contact-card-value">xxxxxx</span>
+      </div>
+    </div>
+
+    <h1 class="headline scribble-target scribble-hidden">
+Let's talk.
+    </h1>
+
+    <p class="description scribble-target scribble-hidden">
+      Whether you need a full visibility audit, AI strategy consultation, or a custom data pipeline — reach out and we'll scope it together.
+    </p>
+
+    <button class="contact-line contact-line-btn scribble-target scribble-hidden" id="contact-cta-btn">Contact Us</button>
+  </div>
+
+  <!-- Glass contact modal -->
+  <div class="contact-modal-overlay" id="contact-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Contact options">
+    <div class="contact-modal-glass">
+      <p class="contact-modal-title">Get in touch via</p>
+      <div class="contact-modal-options">
+        <a href="" class="contact-modal-option">
+          <span class="contact-modal-option-label">WhatsApp</span>
+          <span class="contact-modal-arrow">→</span>
+        </a>
+        <a href="" class="contact-modal-option">
+          <span class="contact-modal-option-label">Email</span>
+          <span class="contact-modal-arrow">→</span>
+        </a>
+      </div>
+      <button class="contact-modal-close" id="contact-modal-close" aria-label="Close">✕</button>
+    </div>
+  </div>
+
+  <script>
+    function initContactModal() {
+      const ctaBtn = document.getElementById('contact-cta-btn');
+      const overlay = document.getElementById('contact-modal-overlay');
+      const closeBtn = document.getElementById('contact-modal-close');
+
+      if (!ctaBtn || !overlay) return;
+
+      const open = () => {
+        overlay.classList.add('contact-modal-open');
+        overlay.removeAttribute('aria-hidden');
+      };
+
+      const close = () => {
+        overlay.classList.remove('contact-modal-open');
+        overlay.setAttribute('aria-hidden', 'true');
+      };
+
+      ctaBtn.addEventListener('click', open);
+      closeBtn?.addEventListener('click', close);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+    }
+
+    document.addEventListener('astro:page-load', initContactModal);
+  </script>
+
+</BaseLayout>

@@ -1,0 +1,64 @@
+---
+import NoteLayout from '../../layouts/NoteLayout.astro';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'GA4 Migration Playbook',
+  description: 'Step-by-step guide to migrating from Universal Analytics to GA4 — data streams, events, conversions, and reporting.',
+  author: { '@type': 'Organization', name: 'Rankit Consultancy' },
+  datePublished: '2026-02-28',
+};
+---
+<NoteLayout
+  title="GA4 Migration Playbook"
+  description="Step-by-step guide to migrating from Universal Analytics to GA4 — data streams, events, conversions, and reporting."
+  articleSlug="ga4-migration-playbook"
+  schema={schema}
+>
+  <p class="description scribble-target">Universal Analytics is gone. If you are still running a parallel setup or have yet to fully configure GA4, this playbook walks you through a clean migration — from data streams to custom reports.</p>
+
+  <h2 class="note-heading">Phase 1 — Property Setup</h2>
+  <figure class="editorial float-right">
+    <img src="/images/headimage.png" alt="GA4 property configuration" />
+    <figcaption>Start by creating a GA4 web data stream in the Admin panel.</figcaption>
+  </figure>
+  <ul class="note-list">
+    <li>Create a GA4 property in Admin → Property → Create Property. Choose the web data stream.</li>
+    <li>Install the GA4 tag via Google Tag Manager or the <code>gtag.js</code> snippet. Verify real-time data flows within minutes.</li>
+    <li>Configure data retention to 14 months (the maximum) under Admin → Data Settings → Data Retention.</li>
+    <li>Enable Google Signals for cross-device tracking and remarketing audiences.</li>
+  </ul>
+
+  <h2 class="note-heading">Phase 2 — Event Architecture</h2>
+  <p class="note-text">GA4 is event-based, not session-based. Every interaction is an event with parameters.</p>
+  <ul class="note-list">
+    <li><strong>Automatically collected events</strong> — <code>page_view</code>, <code>session_start</code>, <code>first_visit</code>, <code>user_engagement</code>. No setup needed.</li>
+    <li><strong>Enhanced measurement events</strong> — scroll, outbound clicks, site search, file downloads, video engagement. Toggle these on in the data stream settings.</li>
+    <li><strong>Custom events</strong> — map your UA goals to GA4 events. Use <code>gtag('event', 'sign_up', {'{'}method: 'email'{'}'});</code> or equivalent GTM tags.</li>
+    <li><strong>Naming conventions</strong> — use snake_case, keep names under 40 characters, and document every custom event in a measurement plan spreadsheet.</li>
+  </ul>
+
+  <h2 class="note-heading">Phase 3 — Conversions</h2>
+  <ul class="note-list">
+    <li>In GA4, conversions are just events marked as conversion events. Go to Admin → Events → toggle the conversion flag.</li>
+    <li>Map every UA goal to a GA4 conversion event. Common examples: <code>generate_lead</code>, <code>purchase</code>, <code>sign_up</code>, <code>contact_form_submit</code>.</li>
+    <li>Set up conversion value tracking if applicable — pass a <code>value</code> and <code>currency</code> parameter with each conversion event.</li>
+    <li>Test conversions in the DebugView before going live.</li>
+  </ul>
+
+  <h2 class="note-heading">Phase 4 — Reporting</h2>
+  <ul class="note-list">
+    <li><strong>Explorations</strong> — replace UA custom reports with GA4 Explorations (Free-form, Funnel, Path, Segment overlap).</li>
+    <li><strong>Custom dimensions</strong> — register event and user-scoped custom dimensions for parameters you want to slice reports by.</li>
+    <li><strong>Looker Studio</strong> — connect GA4 as a data source. Rebuild your UA dashboards using the GA4 connector and new event-based dimensions.</li>
+    <li><strong>BigQuery export</strong> — enable the daily and streaming export for raw event data. This is GA4's killer feature for advanced analysis.</li>
+  </ul>
+
+  <h2 class="note-heading">Common Pitfalls</h2>
+  <ul class="note-list">
+    <li>Session counts differ between UA and GA4 — GA4 does not restart sessions at midnight or on new campaign parameters.</li>
+    <li>Bounce rate in GA4 is the inverse of engagement rate, not the UA definition. Set expectations with stakeholders.</li>
+    <li>Data thresholds may hide rows in reports when Google Signals is active and user counts are low. Use BigQuery export to bypass thresholds.</li>
+  </ul>
+</NoteLayout>

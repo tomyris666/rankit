@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllArticles } from '../data/notes-tree';
+
+const allArticles = getAllArticles();
+const carouselArticles = allArticles.slice(0, 6);
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Rankit Consultancy",
+  "url": "https://rankitconsultancy.com",
+  "description": "A digital marketing consultancy specialising in cutting-edge technologies.",
+  "areaServed": "Worldwide",
+  "serviceType": ["Digital Marketing", "SEO", "AI Strategy", "Data Analytics"]
+};
+---
+
+<BaseLayout
+  title="Rankit Consultancy"
+  description="A digital marketing consultancy specialising in cutting-edge technologies."
+  schema={websiteSchema}
+>
+  <div class="page">
+    <div class="hero-text">
+      <h1 class="headline scribble-target scribble-hidden">
+Digital marketing consultancy specialising in cutting-edge technologies.
+      </h1>
+
+      <p class="description scribble-target scribble-hidden">
+        We engineer visibility systems that compound over time. AI-driven insight, data science, and proven search strategies — built for brands that think long-term.
+      </p>
+
+      <a href="/contact/" class="contact-line scribble-target scribble-hidden">Get in touch</a>
+    </div>
+
+    <div class="hero-image-side">
+      <video
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        poster="/images/stones.png"
+        class="hero-image"
+        aria-label="Abstract wireframe animation of a head"
+      >
+        <source src="/images/stones_loop.webm" type="video/webm" />
+        <source src="/images/stones_loop.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+
+  <section class="notes-carousel-section">
+    <div class="notes-carousel-header">
+      <div class="notes-carousel-header-left">
+        <p class="notes-carousel-label">From the Notes</p>
+        <p class="notes-carousel-description">Practical guides, sharp observations, and field notes from the team — published openly, no gatekeeping.</p>
+      </div>
+      <div class="carousel-controls" aria-label="Carousel navigation">
+        <button class="carousel-btn" id="carousel-prev" aria-label="Previous">←</button>
+        <button class="carousel-btn" id="carousel-next" aria-label="Next">→</button>
+      </div>
+    </div>
+
+    <div class="notes-carousel" id="notes-carousel">
+      {carouselArticles.map(({ article, path, categoryPath }) => (
+        <a href={path} class="carousel-card">
+          <img
+            src={article.image || '/images/article-default.svg'}
+            alt=""
+            class="carousel-card-image"
+            loading="lazy"
+          />
+          <div class="carousel-card-body">
+            <div class="carousel-card-meta">
+              {categoryPath.map((part) => (
+                <span class="carousel-card-tag">{part}</span>
+              ))}
+            </div>
+            <p class="carousel-card-title">{article.title}</p>
+            <p class="carousel-card-summary">{article.summary}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="carousel-cta-wrapper">
+      <a href="/notes/" class="carousel-read-more">Read More</a>
+    </div>
+  </section>
+
+  <section class="email-section">
+    <p class="email-section-label">Newsletter</p>
+    <h2 class="email-section-heading">Get the latest notes, guides, and insights — directly to your inbox.</h2>
+    <form class="email-section-form" id="email-form" name="newsletter" data-netlify="true">
+      <input type="hidden" name="form-name" value="newsletter" />
+      <input
+        type="email"
+        name="email"
+        class="email-section-input"
+        placeholder="your@email.com"
+        required
+        autocomplete="email"
+      />
+      <button type="submit" class="email-section-btn">Subscribe</button>
+    </form>
+    <p class="email-section-success" id="email-success">You're on the list.</p>
+  </section>
+
+  <script>
+    // ── Infinite loop carousel ──────────────────────────────────────────
+    let carouselAbort: AbortController | null = null;
+
+    function initCarousel() {
+      carouselAbort?.abort();
+      carouselAbort = new AbortController();
+      const { signal } = carouselAbort;
+
+      const carousel = document.getElementById('notes-carousel') as HTMLElement | null;
+      if (!carousel) return;
+
+      // Grab original cards before we clone anything
+      const origCards = Array.from(
+        carousel.querySelectorAll('.carousel-card')
+      ) as HTMLElement[];
+      const n = origCards.length;
+      if (n === 0) return;
+
+      // Build: [clone set | real set | clone set]
+      // Prepend clones in reverse order so they appear in correct left-to-right order
+      for (let i = n - 1; i >= 0; i--) {
+        carousel.insertBefore(origCards[i].cloneNode(true), carousel.firstChild);
+      }
+      // Append clones in forward order
+      for (let i = 0; i < n; i++) {
+        carousel.appendChild(origCards[i].cloneNode(true));
+      }
+
+      function getCards() {
+        return Array.from(carousel!.querySelectorAll('.carousel-card')) as HTMLElement[];
+      }
+
+      // Distance from cards[0] to cards[n] = one full loop section
+      function sectionWidth(): number {
+        const cards = getCards();
+        if (cards.length <= n) return 0;
+        return cards[n].offsetLeft - cards[0].offsetLeft;
+      }
+
+      // 3-D wheel effect
+      function update() {
+        const cards = getCards();
+        const cr = carousel!.getBoundingClientRect();
+        const centerX = cr.left + cr.width / 2;
+
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenter = rect.left + rect.width / 2;
+          const dist = cardCenter - centerX;
+          const maxDist = cr.width * 0.55;
+          const t = Math.max(-1, Math.min(1, dist / maxDist));
+
+          const rotY = t * 38;
+          const scale = 1 - Math.abs(t) * 0.2;
+          const opacity = 1 - Math.abs(t) * 0.55;
+
+          card.style.transform = `perspective(900px) rotateY(${rotY}deg) scale(${scale})`;
+          card.style.opacity = String(Math.max(0.35, opacity));
+        });
+      }
+
+      // Initialise: jump scroll to start of real section, then reveal
+      requestAnimationFrame(() => {
+        const sw = sectionWidth();
+        if (sw > 0) carousel!.scrollLeft = sw;
+        update();
+        // Reveal only after the scroll jump is done — prevents blink
+        carousel!.classList.add('carousel-ready');
+        requestAnimationFrame(update);
+      });
+
+      // Scroll handler: teleport seamlessly when crossing into clone zones
+      carousel.addEventListener('scroll', () => {
+        const sw = sectionWidth();
+        if (sw <= 0) return;
+        // In leading clone zone → jump forward by one section
+        if (carousel!.scrollLeft < sw) {
+          carousel!.scrollLeft += sw;
+        // In trailing clone zone → jump back by one section
+        } else if (carousel!.scrollLeft >= 2 * sw) {
+          carousel!.scrollLeft -= sw;
+        }
+        update();
+      }, { passive: true, signal });
+
+      // Mouse drag
+      let dragging = false;
+      let startX = 0;
+      let startSL = 0;
+
+      carousel.addEventListener('mousedown', (e) => {
+        dragging = true;
+        startX = e.clientX;
+        startSL = carousel!.scrollLeft;
+        carousel!.style.cursor = 'grabbing';
+        e.preventDefault();
+      }, { signal });
+
+      document.addEventListener('mouseup', () => {
+        if (!dragging) return;
+        dragging = false;
+        carousel!.style.cursor = 'grab';
+      }, { signal });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        carousel!.scrollLeft = startSL - (e.clientX - startX);
+      }, { signal });
+
+      // Prev / Next — instant scroll (smooth fights the loop teleport)
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+
+      function cardStep() {
+        const c = carousel!.querySelector('.carousel-card') as HTMLElement | null;
+        return (c?.offsetWidth || 240) + 28;
+      }
+
+      prevBtn?.addEventListener('click', () => {
+        carousel!.scrollLeft -= cardStep();
+      }, { signal });
+
+      nextBtn?.addEventListener('click', () => {
+        carousel!.scrollLeft += cardStep();
+      }, { signal });
+    }
+
+    document.addEventListener('astro:page-load', initCarousel);
+
+    // ── Newsletter form ─────────────────────────────────────────────────
+    function initEmailForm() {
+      const form = document.getElementById('email-form') as HTMLFormElement | null;
+      const success = document.getElementById('email-success');
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form) as any).toString(),
+          });
+        } catch (_) { /* Netlify returns 303, fetch may reject — still show success */ }
+        form.style.display = 'none';
+        success?.classList.add('visible');
+      });
+    }
+
+    document.addEventListener('astro:page-load', initEmailForm);
+  </script>
+</BaseLayout>

@@ -1,0 +1,196 @@
+---
+import ViewTransitions from 'astro/components/ViewTransitions.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  schema?: object | object[];
+  lang?: string;
+}
+
+const { title, description, canonical, schema, lang = 'en' } = Astro.props;
+const currentPath = Astro.url.pathname;
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || '';
+const canonicalUrl = canonical || `${siteUrl}${currentPath}`;
+const currentYear = new Date().getFullYear();
+
+const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+const navItems = [
+  { href: '/about/', label: 'About' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:locale" content="en_GB" />
+
+  <ViewTransitions />
+
+  {schemas.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+
+  <style is:global>
+    @import '../styles/global.css';
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">RANKIT</a>
+      <ul class="nav-links">
+        {navItems.map(({ href, label }) => (
+          <li>
+            <a href={href} class={currentPath === href || (href !== '/' && currentPath.startsWith(href)) ? 'active' : ''}>
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-text">&copy; {currentYear} RANKIT</p>
+    </div>
+  </footer>
+
+  <script>
+    function initScribble() {
+      const targets = document.querySelectorAll('.scribble-target');
+      if (!targets.length) return;
+
+      // Set up two-span structure: visible + transparent rest (reserves final layout)
+      const elements: { el: HTMLElement; container: HTMLElement; text: string; visible: HTMLElement; rest: HTMLElement; cursor: HTMLElement }[] = [];
+      targets.forEach((el) => {
+        const htmlEl = el as HTMLElement;
+        const text = htmlEl.textContent?.trim() || '';
+        htmlEl.dataset.scribbleText = text;
+
+        // If there's a .highlight wrapper, type inside it; otherwise type in the element directly
+        const highlightSpan = htmlEl.querySelector('.highlight') as HTMLElement | null;
+        const container = highlightSpan || htmlEl;
+        container.innerHTML = '';
+
+        const visible = document.createElement('span');
+        visible.className = 'scribble-vis';
+
+        const cursor = document.createElement('span');
+        cursor.className = 'scribble-cursor';
+
+        const rest = document.createElement('span');
+        rest.className = 'scribble-rest';
+        rest.textContent = text;
+
+        container.appendChild(visible);
+        container.appendChild(cursor);
+        container.appendChild(rest);
+
+        htmlEl.classList.remove('scribble-hidden', 'scribble-done', 'scribble-typing');
+        htmlEl.classList.add('scribble-waiting');
+        elements.push({ el: htmlEl, container, text, visible, rest, cursor });
+      });
+
+      // Type out elements sequentially — cursor only appears when element starts
+      let idx = 0;
+      function typeNext() {
+        if (idx >= elements.length) return;
+        const entry = elements[idx];
+        entry.el.classList.remove('scribble-waiting');
+        entry.el.classList.add('scribble-typing');
+        entry.cursor.classList.add('scribble-cursor-active');
+        typeElement(entry, () => {
+          entry.cursor.classList.remove('scribble-cursor-active');
+          entry.cursor.remove();
+          entry.el.classList.remove('scribble-typing');
+          entry.el.classList.add('scribble-done');
+          idx++;
+          if (idx < elements.length) {
+            const gap = elements[idx].el.tagName === 'H1' ? 200 : 80;
+            setTimeout(typeNext, gap);
+          }
+        });
+      }
+      typeNext();
+    }
+
+    function typeElement(entry: { el: HTMLElement; text: string; visible: HTMLElement; rest: HTMLElement }, onDone: () => void) {
+      const isHeading = entry.el.tagName === 'H1';
+      let i = 0;
+      const len = entry.text.length;
+      const baseDelay = isHeading
+        ? (len > 100 ? Math.min(35, 3000 / len) : 35)
+        : (len > 100 ? Math.min(12, 1200 / len) : 12);
+      const jitter = isHeading ? 15 : 4;
+
+      function tick() {
+        if (i < len) {
+          i++;
+          entry.visible.textContent = entry.text.slice(0, i);
+          entry.rest.textContent = entry.text.slice(i);
+          const delay = baseDelay + (Math.random() * jitter * 2 - jitter);
+          setTimeout(tick, Math.max(8, delay));
+        } else {
+          // Remove rest span and cursor, keep vis span with full text
+          entry.rest.remove();
+          onDone();
+        }
+      }
+      tick();
+    }
+
+    function initNavScroll() {
+      const nav = document.querySelector('.nav') as HTMLElement | null;
+      if (!nav) return;
+      const update = () => nav.classList.toggle('nav-scrolled', window.scrollY > 20);
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // Run on initial load and after each Astro page swap
+    document.addEventListener('astro:page-load', () => {
+      initScribble();
+      initNavScroll();
+    });
+
+    // Re-trigger hero video ONLY after a ViewTransitions navigation swap
+    // (not on initial hard refresh — autoplay attribute handles that, and
+    //  v.load() would cause a blank-frame blink on refresh)
+    document.addEventListener('astro:after-swap', () => {
+      document.querySelectorAll('video[autoplay]').forEach((el) => {
+        const v = el as HTMLVideoElement;
+        v.play().catch(() => {});
+      });
+    });
+
+    // Fallback: if astro:page-load never fires (e.g. ClientRouter script blocked),
+    // run once window.load fires — only if elements are still in their initial hidden state
+    window.addEventListener('load', () => {
+      if (document.querySelector('.scribble-hidden')) {
+        initScribble();
+      }
+    });
+  </script>
+
+</body>
+</html>
