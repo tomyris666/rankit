@@ -1063,7 +1063,8 @@ a.contact-card-value:hover {
 
 .notes-carousel-header {
   padding: 0 3rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 1200px;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -1123,6 +1124,8 @@ a.contact-card-value:hover {
 /* ── Read More below carousel ── */
 .carousel-cta-wrapper {
   padding: 2rem 3rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
 }
@@ -1234,6 +1237,7 @@ a.contact-card-value:hover {
   flex-direction: column;
   gap: 1.5rem;
   max-width: 540px;
+  margin: 0 auto;
 }
 
 .email-section-label {
