@@ -84,23 +84,21 @@ const navItems = [
   </footer>
 
   <script>
-    // ── Page loader (initial hard load only) ──
-    (function () {
+    // ── Page loader ──
+    // astro:after-swap fires on every SPA navigation after the new DOM is in place.
+    // The new body contains a fresh #page-loader — remove it instantly so it never blocks.
+    document.addEventListener('astro:after-swap', () => {
+      const loader = document.getElementById('page-loader');
+      if (loader) loader.remove();
+    });
+
+    // On the very first hard load there is no swap — hide via astro:page-load instead.
+    document.addEventListener('astro:page-load', () => {
       const loader = document.getElementById('page-loader');
       if (!loader) return;
-
-      if (sessionStorage.getItem('rk-loaded')) {
-        loader.remove();
-        return;
-      }
-
-      document.addEventListener('astro:page-load', function onFirstLoad() {
-        document.removeEventListener('astro:page-load', onFirstLoad);
-        sessionStorage.setItem('rk-loaded', '1');
-        loader.classList.add('loader-out');
-        setTimeout(() => loader.remove(), 550);
-      });
-    })();
+      loader.classList.add('loader-out');
+      setTimeout(() => loader.remove(), 550);
+    }, { once: true });
 
     // ── SPA nav progress bar ──
     document.addEventListener('astro:before-preparation', () => {
