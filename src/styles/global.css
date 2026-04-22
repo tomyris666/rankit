@@ -387,8 +387,14 @@ main {
 
 /* ── Footer ── */
 .site-footer {
+  position: relative;
   padding: 2rem 0;
   text-align: center;
+}
+
+.footer-text-wrap {
+  position: relative;
+  z-index: 1;
 }
 
 .footer-text {
@@ -1136,16 +1142,18 @@ a.contact-card-value:hover {
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-black);
-  border: 1px solid var(--color-black);
+  color: var(--color-white);
+  background: var(--color-burgundy);
+  border: 1px solid var(--color-burgundy);
   text-decoration: none;
   padding: 0.55em 1.3em;
   display: inline-block;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .carousel-read-more:hover {
-  background: var(--color-black);
+  background: #5a2229;
+  border-color: #5a2229;
   color: var(--color-white);
 }
 
@@ -1288,17 +1296,17 @@ a.contact-card-value:hover {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-white);
-  background: var(--color-black);
-  border: 1px solid var(--color-black);
+  background: var(--color-burgundy);
+  border: 1px solid var(--color-burgundy);
   padding: 0.6em 1.1em;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, border-color 0.2s;
   white-space: nowrap;
 }
 
 .email-section-btn:hover {
-  background: var(--color-text-muted);
-  border-color: var(--color-text-muted);
+  background: #5a2229;
+  border-color: #5a2229;
 }
 
 .email-section-success {
