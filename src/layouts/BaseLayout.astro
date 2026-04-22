@@ -50,6 +50,15 @@ const navItems = [
   </style>
 </head>
 <body>
+  <!-- SPA navigation progress bar -->
+  <div id="nav-progress" aria-hidden="true"></div>
+
+  <!-- Initial page loader — removed after first hard load via JS -->
+  <div id="page-loader" aria-hidden="true">
+    <span class="loader-wordmark">RANKIT</span>
+    <div class="loader-track"><div class="loader-fill"></div></div>
+  </div>
+
   <nav class="nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">RANKIT</a>
@@ -76,6 +85,42 @@ const navItems = [
   </footer>
 
   <script>
+    // ── Page loader (initial hard load only) ──
+    (function () {
+      const loader = document.getElementById('page-loader');
+      if (!loader) return;
+
+      if (sessionStorage.getItem('rk-loaded')) {
+        loader.remove();
+        return;
+      }
+
+      document.addEventListener('astro:page-load', function onFirstLoad() {
+        document.removeEventListener('astro:page-load', onFirstLoad);
+        sessionStorage.setItem('rk-loaded', '1');
+        loader.classList.add('loader-out');
+        setTimeout(() => loader.remove(), 550);
+      });
+    })();
+
+    // ── SPA nav progress bar ──
+    document.addEventListener('astro:before-preparation', () => {
+      const b = document.getElementById('nav-progress');
+      if (!b) return;
+      b.classList.remove('np-complete');
+      b.style.width = '';
+      void b.offsetWidth;
+      b.classList.add('np-active');
+    });
+
+    document.addEventListener('astro:page-load', () => {
+      const b = document.getElementById('nav-progress');
+      if (!b || !b.classList.contains('np-active')) return;
+      b.classList.remove('np-active');
+      b.classList.add('np-complete');
+      setTimeout(() => b.classList.remove('np-complete'), 550);
+    });
+
     function initScribble() {
       const targets = document.querySelectorAll('.scribble-target');
       if (!targets.length) return;
@@ -193,4 +238,83 @@ const navItems = [
   </script>
 
 </body>
+
+<style is:global>
+  /* ── Page loader ── */
+  #page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.6rem;
+    pointer-events: all;
+    transition: opacity 0.45s ease;
+  }
+  #page-loader.loader-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loader-wordmark {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    color: #1a1a1a;
+  }
+  .loader-wordmark::after {
+    content: '_';
+    color: #722f37;
+    animation: ldr-blink 0.9s step-end infinite;
+  }
+  @keyframes ldr-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  .loader-track {
+    width: 56px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .loader-fill {
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: #722f37;
+    animation: ldr-fill 0.55s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+  }
+  @keyframes ldr-fill { to { width: 100%; } }
+
+  /* ── SPA nav progress bar ── */
+  #nav-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: #722f37;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #nav-progress.np-active {
+    opacity: 1;
+    animation: np-grow 0.7s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  }
+  #nav-progress.np-complete {
+    width: 100% !important;
+    animation: none;
+    transition: width 0.12s ease, opacity 0.35s ease 0.15s;
+    opacity: 0;
+  }
+  @keyframes np-grow {
+    from { width: 0%; }
+    to   { width: 82%; }
+  }
+</style>
 </html>
