@@ -260,16 +260,19 @@ Digital marketing consultancy specialising in cutting-edge technologies.
     .garden-strip {
       position: absolute;
       inset: 0;
-      background-image: url('/images/garden.webp');
+      background-image: url('/images/garden2.webp');
       background-repeat: repeat-x;
-      background-size: auto 160px;
+      background-size: auto 100%;
       background-position: bottom center;
       pointer-events: none;
     }
 
-    /* give footer room so the text sits above the garden */
     body:has(.garden-strip) .site-footer {
-      padding-bottom: 160px;
+      height: 160px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 
