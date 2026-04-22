@@ -56,7 +56,6 @@ const navItems = [
   <!-- Initial page loader — removed after first hard load via JS -->
   <div id="page-loader" aria-hidden="true">
     <span class="loader-wordmark">RANKIT</span>
-    <div class="loader-track"><div class="loader-fill"></div></div>
   </div>
 
   <nav class="nav">
@@ -274,21 +273,6 @@ const navItems = [
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
-  .loader-track {
-    width: 56px;
-    height: 1px;
-    background: rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-  }
-  .loader-fill {
-    position: absolute;
-    inset: 0;
-    width: 0;
-    background: #722f37;
-    animation: ldr-fill 0.55s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
-  }
-  @keyframes ldr-fill { to { width: 100%; } }
 
   /* ── SPA nav progress bar ── */
   #nav-progress {
