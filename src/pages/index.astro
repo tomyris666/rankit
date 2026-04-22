@@ -21,8 +21,6 @@ const websiteSchema = {
   description="A digital marketing consultancy specialising in cutting-edge technologies."
   schema={websiteSchema}
 >
-  <div id="wine-blobs" aria-hidden="true"></div>
-
   <div class="page">
     <div class="hero-text">
       <h1 class="headline scribble-target scribble-hidden">
@@ -38,7 +36,7 @@ Digital marketing consultancy specialising in cutting-edge technologies.
 
     <div class="hero-image-side">
       <img
-        src="/images/bonzai.jpg"
+        src="/images/bonzai.webp"
         alt="Bonsai"
         class="hero-image"
         loading="eager"
@@ -104,63 +102,6 @@ Digital marketing consultancy specialising in cutting-edge technologies.
   </section>
 
   <script>
-    // ── Wine blob background ──────────────────────────────────────────
-    let wineBlobTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const SHAPES = [
-      '62% 38% 55% 45% / 52% 60% 40% 58%',
-      '45% 55% 60% 40% / 58% 44% 62% 42%',
-      '50% 50% 42% 58% / 62% 38% 54% 46%',
-      '56% 44% 50% 50% / 46% 56% 44% 56%',
-      '38% 62% 56% 44% / 54% 46% 62% 38%',
-      '60% 40% 48% 52% / 44% 60% 42% 58%',
-    ];
-
-    function spawnBlob() {
-      const container = document.getElementById('wine-blobs');
-      if (!container) return;
-
-      const blob = document.createElement('div');
-      blob.className = 'w-blob';
-
-      const x = 3 + Math.random() * 94;
-      const y = 3 + Math.random() * 94;
-      const w = 60 + Math.random() * 120;
-      const h = w * (0.55 + Math.random() * 0.7);
-      const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-      const alpha = 0.07 + Math.random() * 0.1;
-
-      blob.style.cssText = `
-        left:${x}%;top:${y}%;
-        width:${w}px;height:${h}px;
-        border-radius:${shape};
-        background:radial-gradient(ellipse at 38% 36%,
-          rgba(114,47,55,${(alpha * 2.2).toFixed(3)}) 0%,
-          rgba(114,47,55,${alpha.toFixed(3)}) 55%,
-          transparent 100%);
-      `;
-
-      container.appendChild(blob);
-
-      const life = 2200 + Math.random() * 2800;
-      setTimeout(() => blob.classList.add('w-out'), life);
-      setTimeout(() => blob.remove(), life + 1700);
-
-      wineBlobTimer = setTimeout(spawnBlob, 700 + Math.random() * 1100);
-    }
-
-    function initWineBlobs() {
-      if (wineBlobTimer) { clearTimeout(wineBlobTimer); wineBlobTimer = null; }
-      const container = document.getElementById('wine-blobs');
-      if (!container) return;
-      container.innerHTML = '';
-      for (let i = 0; i < 5; i++) setTimeout(spawnBlob, i * 320);
-    }
-
-    document.addEventListener('astro:before-preparation', () => {
-      if (wineBlobTimer) { clearTimeout(wineBlobTimer); wineBlobTimer = null; }
-    });
-
     // ── Infinite loop carousel ──────────────────────────────────────────
     let carouselAbort: AbortController | null = null;
 
@@ -288,10 +229,7 @@ Digital marketing consultancy specialising in cutting-edge technologies.
       }, { signal });
     }
 
-    document.addEventListener('astro:page-load', () => {
-      initWineBlobs();
-      initCarousel();
-    });
+    document.addEventListener('astro:page-load', initCarousel);
 
     // ── Newsletter form ─────────────────────────────────────────────────
     function initEmailForm() {
@@ -317,31 +255,41 @@ Digital marketing consultancy specialising in cutting-edge technologies.
   </script>
 
   <style>
-    #wine-blobs {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
+    .hero-image {
+      animation: hero-glitch 9s infinite;
     }
 
-    .w-blob {
-      position: absolute;
-      transform: translate(-50%, -50%) scale(0);
-      animation: wblob-in 0.5s cubic-bezier(0.2, 0, 0.1, 1) forwards;
-      transition: opacity 1.7s ease;
-      filter: blur(2px);
-      will-change: transform, opacity;
-    }
-
-    .w-blob.w-out {
-      opacity: 0;
-    }
-
-    @keyframes wblob-in {
-      0%   { transform: translate(-50%, -50%) scale(0); }
-      72%  { transform: translate(-50%, -50%) scale(1.06); }
-      100% { transform: translate(-50%, -50%) scale(1); }
+    @keyframes hero-glitch {
+      0%, 84%, 100% {
+        filter: none;
+        transform: translateX(0);
+      }
+      /* burst 1 */
+      85% {
+        filter: drop-shadow(-5px 0 rgba(114,47,55,0.9)) drop-shadow(5px 0 rgba(0,0,0,0.4));
+        transform: translateX(-4px);
+      }
+      85.4% {
+        filter: drop-shadow(5px 0 rgba(114,47,55,0.7)) drop-shadow(-3px 0 rgba(0,0,0,0.3));
+        transform: translateX(3px);
+      }
+      85.8% {
+        filter: drop-shadow(-3px 0 rgba(114,47,55,0.5));
+        transform: translateX(-2px);
+      }
+      86.2% {
+        filter: none;
+        transform: translateX(0);
+      }
+      /* micro flicker */
+      87% {
+        filter: drop-shadow(3px 0 rgba(114,47,55,0.6));
+        transform: translateX(2px);
+      }
+      87.3% {
+        filter: none;
+        transform: translateX(0);
+      }
     }
   </style>
 </BaseLayout>
