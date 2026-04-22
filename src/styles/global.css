@@ -1236,7 +1236,7 @@ a.contact-card-value:hover {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 540px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -1256,11 +1256,13 @@ a.contact-card-value:hover {
   color: var(--color-black);
   line-height: 1.4;
   margin: 0;
+  max-width: 480px;
 }
 
 .email-section-form {
   display: flex;
   gap: 0;
+  max-width: 480px;
 }
 
 .email-section-input {
