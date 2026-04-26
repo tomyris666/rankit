@@ -6,7 +6,7 @@ const aboutSchema = {
   "@type": "AboutPage",
   "name": "About Rankit Consultancy",
   "url": "https://rankitconsultancy.com/about/",
-  "description": "Rankit Consultancy cuts through AI hype and delivers real productivity gains — measurable, fast, and built to last.",
+  "description": "Rankit Consultancy — AI integration, search & LLM optimisation, and digital product design. We cut through the noise and ship.",
   "mainEntity": {
     "@type": "Organization",
     "name": "Rankit Consultancy",
@@ -17,80 +17,476 @@ const aboutSchema = {
 
 <BaseLayout
   title="About — Rankit Consultancy"
-  description="Rankit Consultancy cuts through AI hype and delivers real productivity gains — measurable, fast, and built to last."
+  description="Rankit Consultancy — AI integration, search & LLM optimisation, and digital product design. We cut through the noise and ship."
   schema={aboutSchema}
 >
 
-  <div class="about-wrap">
-
-    <div class="about-top">
-      <p class="about-label scribble-target scribble-hidden">AI Integration Consultancy</p>
-
-      <h1 class="about-headline scribble-target scribble-hidden">
-        Most AI projects<br>don't deliver.<br>Ours do.
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="hero-section">
+    <div class="hero-inner">
+      <p class="hero-label scribble-target scribble-hidden">Est. 2025 — London</p>
+      <h1 class="hero-title scribble-target scribble-hidden">
+        We cut through<br>the noise.
       </h1>
+      <p class="hero-sub scribble-target scribble-hidden">
+        Three disciplines. One obsession: building digital infrastructure that compounds in value over time.
+      </p>
     </div>
+    <div class="hero-ghost">RANKIT</div>
+  </section>
 
-    <div class="about-body">
+  <!-- ── SERVICES INTRO ─────────────────────────────────────── -->
+  <div class="services-label-row">
+    <span class="services-label">What we do</span>
+    <div class="services-label-line"></div>
+  </div>
 
-      <p class="about-lead scribble-target scribble-hidden">
-        Companies are drowning in pilots that go nowhere, chatbots nobody uses, and automation that breaks every Tuesday. We exist to end that.
-      </p>
-
-      <p class="about-text scribble-target scribble-hidden">
-        Rankit is an AI integration consultancy. We map your actual workflows, identify where AI creates the clearest leverage, then build and deploy it — inside your team, with your data, against real deadlines. No vendor lock-in. No endless retainers. No slide decks as deliverables.
-      </p>
-
-      <div class="about-manifesto scribble-target scribble-hidden">
-        <div class="manifesto-line">
-          <span class="manifesto-num">01</span>
-          <span class="manifesto-rule">Deliverables in 90 days or we've failed.</span>
-        </div>
-        <div class="manifesto-line">
-          <span class="manifesto-num">02</span>
-          <span class="manifesto-rule">Your team runs it. We make sure of that.</span>
-        </div>
-        <div class="manifesto-line">
-          <span class="manifesto-num">03</span>
-          <span class="manifesto-rule">If productivity didn't move, it doesn't count.</span>
+  <!-- ── SERVICE 01 — AI INTEGRATION ──────────────────────────── -->
+  <section class="service-block service-dark">
+    <div class="service-num-bg">01</div>
+    <div class="service-content">
+      <div class="service-header">
+        <span class="service-tag">AI Integration</span>
+        <span class="service-idx">01 / 03</span>
+      </div>
+      <h2 class="service-title">
+        Make AI<br>actually work.
+      </h2>
+      <div class="service-body-row">
+        <p class="service-desc">
+          Most AI projects fail not because the technology is wrong, but because the implementation is. Pilots that go nowhere. Dashboards nobody opens. Automations that break every Tuesday.
+        </p>
+        <div class="service-detail">
+          <p class="service-detail-text">
+            We map your real workflows, identify where AI creates the clearest leverage, then build and deploy working systems — inside your team, against real deadlines. No vendor lock-in. No slide decks as deliverables.
+          </p>
+          <ul class="service-list">
+            <li>LLM pipeline design & deployment</li>
+            <li>Workflow automation</li>
+            <li>AI-assisted product tooling</li>
+            <li>Team enablement & handover</li>
+          </ul>
         </div>
       </div>
-
-      <p class="about-close scribble-target scribble-hidden">
-        We work with founders and operators who are done waiting for AI to pay off.
-      </p>
-
-      <a href="/contact/" class="contact-line scribble-target scribble-hidden">Work with us</a>
-
+      <div class="service-promise">
+        <span class="promise-mark">→</span>
+        <span class="promise-text">Live deliverable in 90 days or we've failed.</span>
+      </div>
     </div>
+  </section>
 
-  </div>
+  <!-- ── SERVICE 02 — SEARCH & LLM OPTIMISATION ──────────────── -->
+  <section class="service-block service-light">
+    <div class="service-num-bg">02</div>
+    <div class="service-content">
+      <div class="service-header">
+        <span class="service-tag service-tag-dark">Search & LLM Optimisation</span>
+        <span class="service-idx service-idx-dark">02 / 03</span>
+      </div>
+      <h2 class="service-title service-title-dark">
+        SEO is dead.<br>GEO is the<br>frontier.
+      </h2>
+      <div class="service-body-row">
+        <p class="service-desc service-desc-dark">
+          Generative AI is rewriting how people find information. ChatGPT, Perplexity, and AI overviews in Google are replacing traditional search clicks. The businesses that adapt now will own the next decade.
+        </p>
+        <div class="service-detail">
+          <p class="service-detail-text service-detail-text-dark">
+            We combine technical SEO depth with deep knowledge of how LLMs retrieve and cite information. We make your business the answer the model recommends — across every AI-powered search surface.
+          </p>
+          <ul class="service-list service-list-dark">
+            <li>Generative Engine Optimisation (GEO)</li>
+            <li>LLM citation strategy</li>
+            <li>Technical SEO architecture</li>
+            <li>AI-first content systems</li>
+          </ul>
+        </div>
+      </div>
+      <div class="service-promise service-promise-dark">
+        <span class="promise-mark promise-mark-dark">→</span>
+        <span class="promise-text service-detail-text-dark">Be the answer the model gives. Not the link nobody clicks.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICE 03 — DIGITAL PRODUCT DESIGN ──────────────────── -->
+  <section class="service-block service-burgundy">
+    <div class="service-num-bg">03</div>
+    <div class="service-content">
+      <div class="service-header">
+        <span class="service-tag">Digital Product Design</span>
+        <span class="service-idx">03 / 03</span>
+      </div>
+      <h2 class="service-title">
+        From brief<br>to shipped.
+      </h2>
+      <div class="service-body-row">
+        <p class="service-desc">
+          Strategy without execution is just a document. We take products from concept through design to working software — fast, opinionated, and built to scale.
+        </p>
+        <div class="service-detail">
+          <p class="service-detail-text">
+            We work as an embedded design and product team for early-stage companies and growth-stage operators who need to move quickly without sacrificing quality. Figma to production. No handoff theatre.
+          </p>
+          <ul class="service-list">
+            <li>Product strategy & scoping</li>
+            <li>UX/UI design systems</li>
+            <li>Prototype to production</li>
+            <li>AI-native product integration</li>
+          </ul>
+        </div>
+      </div>
+      <div class="service-promise">
+        <span class="promise-mark">→</span>
+        <span class="promise-text">Opinionated design. Pragmatic engineering. Nothing in between.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ───────────────────────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <p class="cta-label scribble-target scribble-hidden">Ready to start?</p>
+      <p class="cta-title scribble-target scribble-hidden">Pick a discipline.<br>Or bring us all three.</p>
+      <a href="/contact/" class="contact-line scribble-target scribble-hidden">Work with us</a>
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .about-wrap {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
+  /* ── HERO ── */
+  .hero-section {
+    position: relative;
+    min-height: calc(100vh - var(--nav-height));
+    padding-top: calc(var(--nav-height) + 5rem);
+    padding-bottom: 5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 3rem;
-    padding-top: var(--nav-height);
-    gap: 4rem;
-  }
-
-  .about-top {
-    position: sticky;
-    top: calc(var(--nav-height) + 3rem);
-    padding: 4rem 0 4rem 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    justify-content: flex-end;
+    overflow: hidden;
   }
 
-  .about-label {
+  .hero-ghost {
+    position: absolute;
+    top: 50%;
+    right: -2rem;
+    transform: translateY(-55%);
+    font-family: var(--font-mono);
+    font-size: clamp(6rem, 18vw, 16rem);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,0,0,0.07);
+    letter-spacing: -0.04em;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--color-black);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.9;
+    color: var(--color-text-muted);
+    max-width: 460px;
+  }
+
+  /* ── SERVICES LABEL ROW ── */
+  .services-label-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 3rem;
+    max-width: 1100px;
+    margin: 0 auto 0;
+  }
+
+  .services-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .services-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  /* ── SERVICE BLOCKS ── */
+  .service-block {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 3rem;
+  }
+
+  .service-dark {
+    background: var(--color-black);
+    color: var(--color-white);
+    margin-top: 2rem;
+  }
+
+  .service-light {
+    background: var(--color-white);
+    color: var(--color-black);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .service-burgundy {
+    background: var(--color-burgundy);
+    color: var(--color-white);
+  }
+
+  .service-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  /* Ghost background number */
+  .service-num-bg {
+    position: absolute;
+    bottom: -1rem;
+    right: 1rem;
+    font-family: var(--font-mono);
+    font-size: clamp(8rem, 20vw, 18rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  .service-dark .service-num-bg {
+    color: rgba(255,255,255,0.04);
+  }
+
+  .service-light .service-num-bg {
+    color: rgba(0,0,0,0.04);
+  }
+
+  .service-burgundy .service-num-bg {
+    color: rgba(255,255,255,0.07);
+  }
+
+  .service-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .service-light .service-header {
+    border-bottom-color: var(--color-border);
+  }
+
+  .service-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.3em 0.8em;
+    border-radius: 2px;
+  }
+
+  .service-tag-dark {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .service-idx {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .service-idx-dark {
+    color: var(--color-text-muted);
+  }
+
+  .service-title {
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+    margin-bottom: 3rem;
+  }
+
+  .service-title-dark {
+    color: var(--color-black);
+  }
+
+  .service-body-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .service-desc {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.01em;
+  }
+
+  .service-desc-dark {
+    color: var(--color-text-body);
+  }
+
+  .service-detail-text {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 2;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.5rem;
+  }
+
+  .service-detail-text-dark {
+    color: var(--color-text-muted);
+  }
+
+  .service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .service-list li {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.5);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .service-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-burgundy);
+    font-weight: 400;
+  }
+
+  .service-dark .service-list li::before {
+    color: rgba(255,255,255,0.25);
+  }
+
+  .service-burgundy .service-list li::before {
+    color: rgba(255,255,255,0.35);
+  }
+
+  .service-list-dark li {
+    color: var(--color-text-muted);
+  }
+
+  .service-list-dark li::before {
+    color: var(--color-burgundy) !important;
+  }
+
+  .service-promise {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .service-promise-dark {
+    border-top-color: var(--color-border);
+  }
+
+  .promise-mark {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.4);
+    flex-shrink: 0;
+  }
+
+  .promise-mark-dark {
+    color: var(--color-burgundy);
+  }
+
+  .promise-text {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cta-inner {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .cta-label {
     font-family: var(--font-mono);
     font-size: 0.6rem;
     font-weight: 700;
@@ -99,109 +495,50 @@ const aboutSchema = {
     color: var(--color-text-muted);
   }
 
-  .about-headline {
+  .cta-title {
     font-family: var(--font-mono);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
     font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.02em;
     color: var(--color-black);
-    letter-spacing: -0.03em;
   }
 
-  .about-body {
-    padding: 4rem 0 6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    border-left: 1px solid var(--color-border);
-    padding-left: 4rem;
-  }
-
-  .about-lead {
-    font-family: var(--font-mono);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.75;
-    color: var(--color-black);
-    letter-spacing: -0.01em;
-  }
-
-  .about-text {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 400;
-    line-height: 2;
-    color: var(--color-text-body);
-    letter-spacing: 0.01em;
-  }
-
-  .about-manifesto {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 1rem 0;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .manifesto-line {
-    display: flex;
-    align-items: baseline;
-    gap: 1.25rem;
-    padding: 1.1rem 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .manifesto-num {
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--color-burgundy);
-    flex-shrink: 0;
-    min-width: 1.5rem;
-  }
-
-  .manifesto-rule {
-    font-family: var(--font-mono);
-    font-size: 0.92rem;
-    font-weight: 500;
-    color: var(--color-black);
-    line-height: 1.5;
-    letter-spacing: 0.01em;
-  }
-
-  .about-close {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    font-weight: 400;
-    line-height: 1.8;
-    color: var(--color-text-muted);
-    letter-spacing: 0.01em;
-  }
-
+  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    .about-wrap {
-      grid-template-columns: 1fr;
+    .hero-section {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: calc(var(--nav-height) + 3rem);
+      min-height: auto;
+    }
+
+    .hero-ghost {
+      right: -1rem;
+      opacity: 0.5;
+    }
+
+    .services-label-row {
       padding: 0 1.5rem;
-      padding-top: var(--nav-height);
-      gap: 0;
     }
 
-    .about-top {
-      position: static;
-      padding: 2.5rem 0 1.5rem;
+    .service-block {
+      padding: 3.5rem 1.5rem;
     }
 
-    .about-headline {
-      font-size: clamp(1.8rem, 8vw, 2.4rem);
+    .service-body-row {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
-    .about-body {
-      border-left: none;
-      border-top: 1px solid var(--color-border);
-      padding-left: 0;
-      padding-top: 2rem;
-      padding-bottom: 4rem;
+    .service-num-bg {
+      font-size: clamp(5rem, 30vw, 10rem);
+      bottom: -0.5rem;
+      right: 0.5rem;
+    }
+
+    .cta-section {
+      padding: 4rem 1.5rem;
     }
   }
 </style>
