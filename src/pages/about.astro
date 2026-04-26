@@ -35,14 +35,30 @@ const aboutSchema = {
     <div class="hero-ghost">RANKIT</div>
   </section>
 
-  <!-- ── SERVICES INTRO ─────────────────────────────────────── -->
-  <div class="services-label-row">
-    <span class="services-label">What we do</span>
-    <div class="services-label-line"></div>
+  <!-- ── WHAT WE DO — SERVICE SELECTOR ────────────────────────── -->
+  <div class="what-we-do" id="what-we-do">
+    <p class="wwd-label">What we do</p>
+    <div class="wwd-options">
+      <a href="#search-llm" class="wwd-option" data-target="search-llm">
+        <span class="wwd-num">01</span>
+        <span class="wwd-name">Search & LLM<br>Optimisation</span>
+        <span class="wwd-arrow">↓</span>
+      </a>
+      <a href="#ai-integration" class="wwd-option" data-target="ai-integration">
+        <span class="wwd-num">02</span>
+        <span class="wwd-name">AI<br>Integration</span>
+        <span class="wwd-arrow">↓</span>
+      </a>
+      <a href="#digital-product" class="wwd-option" data-target="digital-product">
+        <span class="wwd-num">03</span>
+        <span class="wwd-name">Digital Product<br>Design</span>
+        <span class="wwd-arrow">↓</span>
+      </a>
+    </div>
   </div>
 
   <!-- ── SERVICE 01 — SEARCH & LLM OPTIMISATION ──────────────── -->
-  <section class="service-block service-dark">
+  <section class="service-block service-dark" id="search-llm">
     <div class="service-num-bg">01</div>
     <div class="service-content">
       <div class="service-header">
@@ -68,15 +84,18 @@ const aboutSchema = {
           </ul>
         </div>
       </div>
-      <div class="service-promise">
-        <span class="promise-mark">→</span>
-        <span class="promise-text">Presence in both ranked results and AI-generated answers.</span>
+      <div class="service-footer">
+        <div class="service-promise">
+          <span class="promise-mark">→</span>
+          <span class="promise-text">Presence in both ranked results and AI-generated answers.</span>
+        </div>
+        <a href="/contact/?service=search-llm" class="service-cta">Enquire about this service</a>
       </div>
     </div>
   </section>
 
   <!-- ── SERVICE 02 — AI INTEGRATION ──────────────────────────── -->
-  <section class="service-block service-light">
+  <section class="service-block service-light" id="ai-integration">
     <div class="service-num-bg">02</div>
     <div class="service-content">
       <div class="service-header">
@@ -102,15 +121,18 @@ const aboutSchema = {
           </ul>
         </div>
       </div>
-      <div class="service-promise service-promise-dark">
-        <span class="promise-mark promise-mark-dark">→</span>
-        <span class="promise-text service-detail-text-dark">Scoped to your workflows. Measured against productivity outcomes.</span>
+      <div class="service-footer service-footer-dark">
+        <div class="service-promise service-promise-dark">
+          <span class="promise-mark promise-mark-dark">→</span>
+          <span class="promise-text service-detail-text-dark">Scoped to your workflows. Measured against productivity outcomes.</span>
+        </div>
+        <a href="/contact/?service=ai-integration" class="service-cta service-cta-dark">Enquire about this service</a>
       </div>
     </div>
   </section>
 
   <!-- ── SERVICE 03 — DIGITAL PRODUCT DESIGN ──────────────────── -->
-  <section class="service-block service-burgundy">
+  <section class="service-block service-burgundy" id="digital-product">
     <div class="service-num-bg">03</div>
     <div class="service-content">
       <div class="service-header">
@@ -136,9 +158,12 @@ const aboutSchema = {
           </ul>
         </div>
       </div>
-      <div class="service-promise">
-        <span class="promise-mark">→</span>
-        <span class="promise-text">Strategy, design, and build under one engagement.</span>
+      <div class="service-footer">
+        <div class="service-promise">
+          <span class="promise-mark">→</span>
+          <span class="promise-text">Strategy, design, and build under one engagement.</span>
+        </div>
+        <a href="/contact/?service=digital-product" class="service-cta">Enquire about this service</a>
       </div>
     </div>
   </section>
@@ -155,6 +180,145 @@ const aboutSchema = {
 </BaseLayout>
 
 <style>
+  /* ── WHAT WE DO SELECTOR ── */
+  .what-we-do {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3rem 0;
+    scroll-margin-top: calc(var(--nav-height) + 1rem);
+  }
+
+  .wwd-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .wwd-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-border);
+  }
+
+  .wwd-option {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 1.75rem;
+    text-decoration: none;
+    border-right: 1px solid var(--color-border);
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wwd-option:last-child {
+    border-right: none;
+  }
+
+  .wwd-option::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-burgundy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .wwd-option:hover::after {
+    transform: scaleX(1);
+  }
+
+  .wwd-option:hover {
+    background: rgba(114, 47, 55, 0.04);
+  }
+
+  .wwd-num {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-burgundy);
+  }
+
+  .wwd-name {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-black);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    flex: 1;
+  }
+
+  .wwd-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .wwd-option:hover .wwd-arrow {
+    transform: translateY(3px);
+    color: var(--color-burgundy);
+  }
+
+  /* ── SERVICE FOOTER (promise + CTA) ── */
+  .service-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+
+  .service-footer-dark {
+    border-top-color: var(--color-border);
+  }
+
+  .service-cta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    background: var(--color-white);
+    text-decoration: none;
+    padding: 0.65em 1.4em;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .service-cta:hover {
+    background: var(--color-burgundy);
+    color: var(--color-white);
+    border-color: var(--color-burgundy);
+  }
+
+  .service-cta-dark {
+    color: var(--color-white);
+    background: var(--color-black);
+    border-color: var(--color-black);
+  }
+
+  .service-cta-dark:hover {
+    background: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+  }
+
   /* ── HERO ── */
   .hero-section {
     position: relative;
@@ -518,8 +682,30 @@ const aboutSchema = {
       opacity: 0.5;
     }
 
-    .services-label-row {
+    .what-we-do {
       padding: 0 1.5rem;
+    }
+
+    .wwd-options {
+      grid-template-columns: 1fr;
+    }
+
+    .wwd-option {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+      flex-direction: row;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      gap: 1.25rem;
+    }
+
+    .wwd-option:last-child {
+      border-bottom: none;
+    }
+
+    .wwd-name {
+      flex: 1;
+      font-size: 0.82rem;
     }
 
     .service-block {
@@ -529,6 +715,16 @@ const aboutSchema = {
     .service-body-row {
       grid-template-columns: 1fr;
       gap: 2rem;
+    }
+
+    .service-footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .service-cta {
+      width: 100%;
+      text-align: center;
     }
 
     .service-num-bg {

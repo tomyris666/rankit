@@ -6,13 +6,54 @@ const contactSchema = {
   "@type": "ContactPage",
   "name": "Contact Rankit Consultancy",
   "url": "https://rankitconsultancy.com/contact/",
-  "description": "Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+  "description": "Get in touch with Rankit Consultancy for search & LLM optimisation, AI integration, and digital product design."
+};
+
+const serviceLabels: Record<string, string> = {
+  'search-llm': 'Search & LLM Optimisation',
+  'ai-integration': 'AI Integration',
+  'digital-product': 'Digital Product Design',
+};
+
+const messageTemplates: Record<string, string> = {
+  'search-llm': `Hi Rankit,
+
+I'm interested in your Search & LLM Optimisation services.
+
+A bit about our situation:
+- We are [company / industry]
+- Our main challenge is [describe your search or visibility challenge]
+- We're looking to [goal — e.g. improve AI search presence, GEO, technical SEO]
+
+Looking forward to hearing from you.`,
+
+  'ai-integration': `Hi Rankit,
+
+I'm interested in your AI Integration services.
+
+A bit about our situation:
+- We are [company / industry]
+- Our main challenge is [describe your workflow or automation challenge]
+- We're looking to [goal — e.g. automate X, build an LLM pipeline, improve team productivity]
+
+Looking forward to hearing from you.`,
+
+  'digital-product': `Hi Rankit,
+
+I'm interested in your Digital Product Design services.
+
+A bit about our situation:
+- We are [company / industry]
+- Our product is [brief description or stage]
+- We need help with [goal — e.g. UX design, product strategy, build]
+
+Looking forward to hearing from you.`,
 };
 ---
 
 <BaseLayout
   title="Contact — Rankit Consultancy"
-  description="Get in touch with Rankit Consultancy for digital marketing, SEO, and AI strategy."
+  description="Get in touch with Rankit Consultancy for search & LLM optimisation, AI integration, and digital product design."
   schema={contactSchema}
 >
 
@@ -37,6 +78,94 @@ Let's talk.
     </p>
 
     <button class="contact-line contact-line-btn scribble-target scribble-hidden" id="contact-cta-btn">Contact Us</button>
+
+    <!-- ── OR DIVIDER ── -->
+    <div class="or-divider scribble-target scribble-hidden">
+      <div class="or-line"></div>
+      <span class="or-text">or</span>
+      <div class="or-line"></div>
+    </div>
+
+    <!-- ── LEAVE A MESSAGE ── -->
+    <div class="leave-message scribble-target scribble-hidden">
+      <p class="lm-label">Leave Us A Message</p>
+      <p id="lm-service-hint" class="lm-service-hint"></p>
+
+      <form
+        class="enquiry-form"
+        id="enquiry-form"
+        name="enquiry"
+        method="POST"
+        netlify
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="enquiry" />
+        <input type="hidden" name="service" id="service-field" value="" />
+        <input type="hidden" name="bot-field" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="input-name">Name</label>
+            <input
+              class="form-input"
+              type="text"
+              id="input-name"
+              name="name"
+              placeholder="Your name"
+              required
+              autocomplete="name"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-email">Email</label>
+            <input
+              class="form-input"
+              type="email"
+              id="input-email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-company">Company <span class="form-optional">(optional)</span></label>
+          <input
+            class="form-input"
+            type="text"
+            id="input-company"
+            name="company"
+            placeholder="Company or project name"
+            autocomplete="organization"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-message">Message</label>
+          <textarea
+            class="form-textarea"
+            id="input-message"
+            name="message"
+            rows="10"
+            placeholder="Tell us about your project..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-submit-row">
+          <button type="submit" class="form-submit-btn" id="submit-btn">
+            <span class="submit-label">Send enquiry</span>
+            <span class="submit-arrow">→</span>
+          </button>
+          <p class="form-note">We typically respond within one business day.</p>
+        </div>
+
+        <p class="form-success" id="form-success" aria-live="polite"></p>
+      </form>
+    </div>
   </div>
 
   <!-- Glass contact modal -->
@@ -48,7 +177,7 @@ Let's talk.
           <span class="contact-modal-option-label">WhatsApp</span>
           <span class="contact-modal-arrow">→</span>
         </a>
-        <a href="" class="contact-modal-option">
+        <a href="mailto:projects@rankitconsultancy.com" class="contact-modal-option">
           <span class="contact-modal-option-label">Email</span>
           <span class="contact-modal-arrow">→</span>
         </a>
@@ -57,35 +186,276 @@ Let's talk.
     </div>
   </div>
 
-  <script>
-    function initContactModal() {
+  <script define:vars={{ messageTemplates, serviceLabels }}>
+    function initContact() {
+      // ── Modal ──
       const ctaBtn = document.getElementById('contact-cta-btn');
       const overlay = document.getElementById('contact-modal-overlay');
       const closeBtn = document.getElementById('contact-modal-close');
 
-      if (!ctaBtn || !overlay) return;
+      if (ctaBtn && overlay) {
+        const open = () => { overlay.classList.add('contact-modal-open'); overlay.removeAttribute('aria-hidden'); };
+        const close = () => { overlay.classList.remove('contact-modal-open'); overlay.setAttribute('aria-hidden', 'true'); };
+        ctaBtn.addEventListener('click', open);
+        closeBtn?.addEventListener('click', close);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      }
 
-      const open = () => {
-        overlay.classList.add('contact-modal-open');
-        overlay.removeAttribute('aria-hidden');
-      };
+      // ── Pre-fill from URL param ──
+      const params = new URLSearchParams(window.location.search);
+      const service = params.get('service') || '';
+      const serviceField = document.getElementById('service-field');
+      const messageField = document.getElementById('input-message');
+      const hintEl = document.getElementById('lm-service-hint');
 
-      const close = () => {
-        overlay.classList.remove('contact-modal-open');
-        overlay.setAttribute('aria-hidden', 'true');
-      };
+      if (serviceField) serviceField.value = service;
 
-      ctaBtn.addEventListener('click', open);
-      closeBtn?.addEventListener('click', close);
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
+      if (service && messageTemplates[service]) {
+        if (messageField) messageField.value = messageTemplates[service];
+        if (hintEl && serviceLabels[service]) {
+          hintEl.textContent = 'Enquiry pre-filled for: ' + serviceLabels[service];
+          hintEl.style.display = 'block';
+        }
+      }
+
+      // ── Form submission ──
+      const form = document.getElementById('enquiry-form');
+      const successEl = document.getElementById('form-success');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (submitBtn) submitBtn.setAttribute('disabled', 'true');
+
+        try {
+          const data = new URLSearchParams(new FormData(form));
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: data.toString(),
+          });
+          form.style.display = 'none';
+          if (successEl) {
+            successEl.textContent = "Message received. We'll be in touch shortly.";
+            successEl.style.display = 'block';
+          }
+        } catch (_) {
+          if (submitBtn) {
+            submitBtn.removeAttribute('disabled');
+            const label = submitBtn.querySelector('.submit-label');
+            if (label) label.textContent = 'Something went wrong — try again';
+          }
+        }
       });
     }
 
-    document.addEventListener('astro:page-load', initContactModal);
+    document.addEventListener('astro:page-load', initContact);
   </script>
+
+</BaseLayout>
+
+<style>
+  /* ── OR DIVIDER ── */
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    max-width: 600px;
+  }
+
+  .or-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .or-text {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* ── LEAVE A MESSAGE ── */
+  .leave-message {
+    max-width: 600px;
+  }
+
+  .lm-label {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-black);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .lm-service-hint {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-burgundy);
+    margin-bottom: 1.5rem;
+    padding: 0.4em 0.75em;
+    border: 1px solid rgba(114, 47, 55, 0.25);
+    background: rgba(114, 47, 55, 0.04);
+    display: none;
+  }
+
+  /* ── FORM ── */
+  .enquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .form-optional {
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 0.6rem;
+  }
+
+  .form-input,
+  .form-textarea {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--color-black);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    padding: 0.7em 0.9em;
+    outline: none;
+    transition: border-color 0.18s;
+    border-radius: 0;
+    width: 100%;
+    line-height: 1.6;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    border-color: var(--color-burgundy);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 220px;
+    font-size: 0.78rem;
+    line-height: 1.85;
+  }
+
+  .form-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .form-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-white);
+    background: var(--color-black);
+    border: 1px solid var(--color-black);
+    padding: 0.75em 1.5em;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .form-submit-btn:hover {
+    background: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+  }
+
+  .form-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .submit-arrow {
+    transition: transform 0.2s;
+  }
+
+  .form-submit-btn:hover .submit-arrow {
+    transform: translateX(3px);
+  }
+
+  .form-note {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .form-success {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--color-burgundy);
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .form-submit-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .form-submit-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
 
 </BaseLayout>
