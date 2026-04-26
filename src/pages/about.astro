@@ -209,9 +209,9 @@ const aboutSchema = {
     inset: 0;
     background: linear-gradient(
       160deg,
-      rgba(10,10,10,0.88) 0%,
-      rgba(10,10,10,0.78) 50%,
-      rgba(114,47,55,0.35) 100%
+      rgba(255,255,255,0.92) 0%,
+      rgba(255,255,255,0.80) 55%,
+      rgba(255,245,245,0.70) 100%
     );
     pointer-events: none;
   }
@@ -238,7 +238,7 @@ const aboutSchema = {
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
+    color: var(--color-text-muted);
     margin-bottom: 1rem;
   }
 
@@ -247,7 +247,7 @@ const aboutSchema = {
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 700;
     letter-spacing: -0.04em;
-    color: var(--color-white);
+    color: var(--color-black);
     margin-bottom: 1.5rem;
     line-height: 1.05;
   }
@@ -256,7 +256,7 @@ const aboutSchema = {
     font-family: var(--font-mono);
     font-size: 0.88rem;
     font-weight: 400;
-    color: rgba(255,255,255,0.6);
+    color: var(--color-text-muted);
     line-height: 1.9;
     max-width: 520px;
   }
@@ -304,38 +304,39 @@ const aboutSchema = {
   /* Dark card: black fill, diagonal cut */
   .wwd-card-dark .wwd-card-fill {
     background: linear-gradient(135deg,
-      rgba(17,17,17,0.92) 0%,
-      rgba(17,17,17,0.6) 45%,
-      transparent 70%
+      rgba(17,17,17,0.88) 0%,
+      rgba(17,17,17,0.55) 50%,
+      transparent 72%
     );
   }
   .wwd-card-dark:hover .wwd-card-fill {
     background: rgba(17,17,17,0.92);
   }
 
-  /* Light card: white fill, diagonal cut */
+  /* Light card: soft white glass, diagonal cut */
   .wwd-card-light .wwd-card-fill {
     background: linear-gradient(135deg,
-      rgba(255,255,255,0.18) 0%,
-      rgba(255,255,255,0.08) 45%,
-      transparent 70%
+      rgba(255,255,255,0.72) 0%,
+      rgba(255,255,255,0.4) 50%,
+      transparent 72%
     );
+    backdrop-filter: blur(4px);
   }
   .wwd-card-light:hover .wwd-card-fill {
-    background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(10px);
   }
 
   /* Burgundy card: diagonal cut */
   .wwd-card-burgundy .wwd-card-fill {
     background: linear-gradient(135deg,
-      rgba(114,47,55,0.9) 0%,
-      rgba(114,47,55,0.55) 45%,
-      transparent 70%
+      rgba(114,47,55,0.88) 0%,
+      rgba(114,47,55,0.5) 50%,
+      transparent 72%
     );
   }
   .wwd-card-burgundy:hover .wwd-card-fill {
-    background: rgba(114,47,55,0.92);
+    background: rgba(114,47,55,0.94);
   }
 
   /* Left accent dash */
@@ -349,10 +350,10 @@ const aboutSchema = {
     transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
     z-index: 1;
   }
-  .wwd-card-dark::before    { background: rgba(255,255,255,0.5); }
-  .wwd-card-light::before   { background: rgba(255,255,255,0.8); }
-  .wwd-card-burgundy::before { background: rgba(255,200,200,0.6); }
-  .wwd-card:hover::before   { width: 5px; }
+  .wwd-card-dark::before     { background: rgba(255,255,255,0.6); }
+  .wwd-card-light::before    { background: var(--color-black); }
+  .wwd-card-burgundy::before { background: rgba(255,200,200,0.7); }
+  .wwd-card:hover::before    { width: 5px; }
 
   .wwd-card-content {
     position: relative;
@@ -541,12 +542,25 @@ const aboutSchema = {
   .cta-label { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-text-muted); }
   .cta-title { font-family: var(--font-mono); font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--color-black); }
 
+  /* Light card needs dark text for contrast against white fill */
+  .wwd-card-light .wwd-card-num  { color: rgba(0,0,0,0.35); }
+  .wwd-card-light .wwd-card-name { color: var(--color-black); }
+  .wwd-card-light .wwd-card-desc { color: rgba(0,0,0,0.55); }
+  .wwd-card-light .wwd-card-cta  { color: rgba(0,0,0,0.4); }
+  .wwd-card-light:hover .wwd-card-cta { color: var(--color-black); }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .wwd-cards { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 640px) {
+    /* background-attachment: fixed breaks on iOS — use scroll */
+    .wwd-section {
+      background-attachment: scroll;
+      background-position: center top;
+    }
+
     .wwd-inner { padding: 3rem 1.5rem 4rem; gap: 2.5rem; }
     .wwd-cards { grid-template-columns: 1fr; }
     .wwd-card { min-height: 200px; }
