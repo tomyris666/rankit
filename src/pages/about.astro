@@ -21,29 +21,52 @@ const aboutSchema = {
   schema={aboutSchema}
 >
 
-  <!-- ── WHAT WE DO HEADER + SELECTOR ─────────────────────────── -->
-  <div class="what-we-do">
-    <h1 class="wwd-title scribble-target scribble-hidden">What We Do</h1>
-    <p class="wwd-sub scribble-target scribble-hidden">Three disciplines, one consultancy — select an area to learn more.</p>
+  <!-- ── WHAT WE DO ─────────────────────────────────────────────── -->
+  <section class="wwd-section">
+    <div class="wwd-overlay"></div>
 
-    <div class="wwd-options">
-      <a href="#search-llm" class="wwd-option wwd-dark">
-        <span class="wwd-num">01</span>
-        <span class="wwd-name">Search & LLM<br>Optimisation</span>
-        <span class="wwd-arrow">↓</span>
-      </a>
-      <a href="#ai-integration" class="wwd-option wwd-light">
-        <span class="wwd-num">02</span>
-        <span class="wwd-name">AI<br>Integration</span>
-        <span class="wwd-arrow">↓</span>
-      </a>
-      <a href="#digital-product" class="wwd-option wwd-burgundy">
-        <span class="wwd-num">03</span>
-        <span class="wwd-name">Digital Product<br>Design</span>
-        <span class="wwd-arrow">↓</span>
-      </a>
+    <div class="wwd-inner">
+      <div class="wwd-header">
+        <p class="wwd-eyebrow scribble-target scribble-hidden">Our disciplines</p>
+        <h1 class="wwd-title scribble-target scribble-hidden">What We Do</h1>
+        <p class="wwd-body scribble-target scribble-hidden">
+          We work across three interconnected disciplines — each one a specialism in its own right, and more powerful in combination. Whether you need one or all three, we start with your specific situation and build from there.
+        </p>
+      </div>
+
+      <div class="wwd-cards">
+        <a href="#search-llm" class="wwd-card wwd-card-dark wwd-reveal">
+          <div class="wwd-card-fill"></div>
+          <div class="wwd-card-content">
+            <span class="wwd-card-num">01</span>
+            <span class="wwd-card-name">Search & LLM<br>Optimisation</span>
+            <p class="wwd-card-desc">Visibility across traditional and AI-powered search — built to compound.</p>
+            <span class="wwd-card-cta">Explore ↓</span>
+          </div>
+        </a>
+
+        <a href="#ai-integration" class="wwd-card wwd-card-light wwd-reveal">
+          <div class="wwd-card-fill"></div>
+          <div class="wwd-card-content">
+            <span class="wwd-card-num">02</span>
+            <span class="wwd-card-name">AI<br>Integration</span>
+            <p class="wwd-card-desc">Operational AI that ships into your workflows and stays working.</p>
+            <span class="wwd-card-cta">Explore ↓</span>
+          </div>
+        </a>
+
+        <a href="#digital-product" class="wwd-card wwd-card-burgundy wwd-reveal">
+          <div class="wwd-card-fill"></div>
+          <div class="wwd-card-content">
+            <span class="wwd-card-num">03</span>
+            <span class="wwd-card-name">Digital Product<br>Design</span>
+            <p class="wwd-card-desc">From brief to production — strategy, design, and build under one engagement.</p>
+            <span class="wwd-card-cta">Explore ↓</span>
+          </div>
+        </a>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- ── SERVICE 01 — SEARCH & LLM OPTIMISATION ──────────────── -->
   <section class="service-block service-dark" id="search-llm">
@@ -168,82 +191,222 @@ const aboutSchema = {
 </BaseLayout>
 
 <style>
-  /* ── WHAT WE DO ── */
-  .what-we-do {
+  /* ── WHAT WE DO SECTION ── */
+  .wwd-section {
+    position: relative;
+    min-height: 100vh;
+    background-image: url('/images/stones.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: stretch;
+    padding-top: var(--nav-height);
+  }
+
+  .wwd-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      160deg,
+      rgba(10,10,10,0.88) 0%,
+      rgba(10,10,10,0.78) 50%,
+      rgba(114,47,55,0.35) 100%
+    );
+    pointer-events: none;
+  }
+
+  .wwd-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: calc(var(--nav-height) + 4rem) 3rem 0;
+    padding: 5rem 3rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .wwd-header {
+    max-width: 640px;
+  }
+
+  .wwd-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1rem;
   }
 
   .wwd-title {
     font-family: var(--font-mono);
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 700;
-    letter-spacing: -0.03em;
-    color: var(--color-black);
-    margin-bottom: 0.75rem;
+    letter-spacing: -0.04em;
+    color: var(--color-white);
+    margin-bottom: 1.5rem;
+    line-height: 1.05;
   }
 
-  .wwd-sub {
+  .wwd-body {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     font-weight: 400;
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.9;
+    max-width: 520px;
   }
 
-  .wwd-options {
+  /* ── CARDS ── */
+  .wwd-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 
-  .wwd-option {
+  .wwd-card {
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    min-height: 280px;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 2.5rem 2rem;
-    text-decoration: none;
-    transition: opacity 0.2s;
+    cursor: pointer;
+    /* scroll-reveal: start invisible */
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s;
   }
 
-  .wwd-option:hover { opacity: 0.85; }
+  .wwd-card.wwd-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-  .wwd-dark     { background: var(--color-black); }
-  .wwd-light    { background: var(--color-white); border: 1px solid var(--color-border); }
-  .wwd-burgundy { background: var(--color-burgundy); }
+  /* Stagger */
+  .wwd-card:nth-child(2) { transition-delay: 0.12s; }
+  .wwd-card:nth-child(3) { transition-delay: 0.24s; }
 
-  .wwd-num {
+  .wwd-card:hover { border-color: rgba(255,255,255,0.35); }
+
+  /* The half-painted fill — diagonal gradient sitting behind content */
+  .wwd-card-fill {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  /* Dark card: black fill, diagonal cut */
+  .wwd-card-dark .wwd-card-fill {
+    background: linear-gradient(135deg,
+      rgba(17,17,17,0.92) 0%,
+      rgba(17,17,17,0.6) 45%,
+      transparent 70%
+    );
+  }
+  .wwd-card-dark:hover .wwd-card-fill {
+    background: rgba(17,17,17,0.92);
+  }
+
+  /* Light card: white fill, diagonal cut */
+  .wwd-card-light .wwd-card-fill {
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.18) 0%,
+      rgba(255,255,255,0.08) 45%,
+      transparent 70%
+    );
+  }
+  .wwd-card-light:hover .wwd-card-fill {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Burgundy card: diagonal cut */
+  .wwd-card-burgundy .wwd-card-fill {
+    background: linear-gradient(135deg,
+      rgba(114,47,55,0.9) 0%,
+      rgba(114,47,55,0.55) 45%,
+      transparent 70%
+    );
+  }
+  .wwd-card-burgundy:hover .wwd-card-fill {
+    background: rgba(114,47,55,0.92);
+  }
+
+  /* Left accent dash */
+  .wwd-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+  }
+  .wwd-card-dark::before    { background: rgba(255,255,255,0.5); }
+  .wwd-card-light::before   { background: rgba(255,255,255,0.8); }
+  .wwd-card-burgundy::before { background: rgba(255,200,200,0.6); }
+  .wwd-card:hover::before   { width: 5px; }
+
+  .wwd-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    height: 100%;
+  }
+
+  .wwd-card-num {
     font-family: var(--font-mono);
-    font-size: 0.58rem;
+    font-size: 0.55rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    display: block;
   }
-  .wwd-dark .wwd-num     { color: rgba(255,255,255,0.4); }
-  .wwd-light .wwd-num    { color: var(--color-burgundy); }
-  .wwd-burgundy .wwd-num { color: rgba(255,255,255,0.5); }
 
-  .wwd-name {
+  .wwd-card-name {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.5;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-white);
+    letter-spacing: -0.01em;
+    display: block;
     flex: 1;
   }
-  .wwd-dark .wwd-name     { color: var(--color-white); }
-  .wwd-light .wwd-name    { color: var(--color-black); }
-  .wwd-burgundy .wwd-name { color: var(--color-white); }
 
-  .wwd-arrow {
+  .wwd-card-desc {
     font-family: var(--font-mono);
-    font-size: 1rem;
-    align-self: flex-end;
-    transition: transform 0.2s;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.75;
+    margin: 0;
   }
-  .wwd-dark .wwd-arrow     { color: rgba(255,255,255,0.35); }
-  .wwd-light .wwd-arrow    { color: var(--color-text-muted); }
-  .wwd-burgundy .wwd-arrow { color: rgba(255,255,255,0.45); }
-  .wwd-option:hover .wwd-arrow { transform: translateY(4px); }
+
+  .wwd-card-cta {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    display: block;
+    transition: color 0.2s, letter-spacing 0.2s;
+  }
+  .wwd-card:hover .wwd-card-cta {
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.14em;
+  }
 
   /* ── SERVICE BLOCKS ── */
   .service-block {
@@ -379,16 +542,17 @@ const aboutSchema = {
   .cta-title { font-family: var(--font-mono); font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--color-black); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    .what-we-do { padding: calc(var(--nav-height) + 2.5rem) 1.5rem 0; }
+  @media (max-width: 900px) {
+    .wwd-cards { grid-template-columns: 1fr 1fr; }
+  }
 
-    .wwd-options { grid-template-columns: 1fr; }
+  @media (max-width: 640px) {
+    .wwd-inner { padding: 3rem 1.5rem 4rem; gap: 2.5rem; }
+    .wwd-cards { grid-template-columns: 1fr; }
+    .wwd-card { min-height: 200px; }
+    .wwd-card-content { padding: 1.5rem 1.25rem; }
 
-    .wwd-option { flex-direction: row; align-items: center; padding: 1.25rem 1.5rem; gap: 1.25rem; }
-    .wwd-name { flex: 1; font-size: 0.85rem; }
-    .wwd-arrow { align-self: center; }
-
-    .service-block { padding: 3.5rem 1.5rem; scroll-margin-top: var(--nav-height); }
+    .service-block { padding: 3.5rem 1.5rem; }
     .service-body-row { grid-template-columns: 1fr; gap: 2rem; }
     .service-footer { flex-direction: column; align-items: flex-start; }
     .service-cta { width: 100%; text-align: center; display: block; }
@@ -397,3 +561,26 @@ const aboutSchema = {
     .cta-section { padding: 4rem 1.5rem; }
   }
 </style>
+
+<script>
+  function initWwdReveal() {
+    const cards = document.querySelectorAll('.wwd-reveal');
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('wwd-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  document.addEventListener('astro:page-load', initWwdReveal);
+</script>
